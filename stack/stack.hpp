@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_base.hpp                                     :+:      :+:    :+:   */
+/*   stack.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 08:24:27 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/09/29 09:03:36 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/09/29 09:24:01 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ namespace ft {
 				typedef Container																	container_type;
 				typedef typename Container::value_type												value_type;
 				typedef typename Container::size_type												size_type;
+				typedef typename Container::reference												reference;
+				typedef typename Container::const_reference											const_reference;
 	
 				//member functions
 				explicit stack (const container_type& ctnr = container_type())						{ _container = cont; };
@@ -38,8 +40,9 @@ namespace ft {
 																									_container = other._container;
 																									return *this; };
 				bool empty() const																	{ return _container.empty(); };
-				size_type size() const																{ return _container.size(); }
-
+				size_type size() const																{ return _container.size(); };
+				value_type& top()																	{ return _container.back(); };
+				const value_type& top() const														{ return _container.back(); };
 	};
 }
 

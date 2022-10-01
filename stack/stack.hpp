@@ -17,36 +17,33 @@
 #include <vector>
 
 namespace ft {
-		template <class T, class Container = std::vector<T> >
-		class Stack {
+	template <class T, class Container = std::vector<T> >
+	class Stack {
 
-		protected:
-				//member object
-				Container																			_container;
-
-		public:
-				//member types
-				typedef Container																	container_type;
-				typedef typename Container::value_type												value_type;
-				typedef typename Container::size_type												size_type;
-				typedef typename Container::reference												reference;
-				typedef typename Container::const_reference											const_reference;
+	protected:
+		//member object
+		Container										_container;
+		
+	public:
+		//member types
+		typedef Container									container_type;
+		typedef typename Container::value_type							value_type;
+		typedef typename Container::size_type							size_type;
+		typedef typename Container::reference							reference;
+		typedef typename Container::const_reference						const_reference;
 	
-				//member functions
-				explicit stack (const container_type& ctnr = container_type())						{ _container = cont; };
-				Stack(Stack const &other)															{ _container = other._container; };
-				~Stack()																			{ };
-				Stack& operator=(const Stack &other)												{ if (this == &other) return *this;
-																									_container = other._container;
-																									return *this; };
-				bool empty() const																	{ return _container.empty(); };
-				size_type size() const																{ return _container.size(); };
-				value_type& top()																	{ return _container.back(); };
-				const value_type& top() const														{ return _container.back(); };
+		//member functions
+		explicit stack (const container_type& ctnr = container_type())				{ _container = cont; };
+		Stack(Stack const &other)								{ _container = other._container; };
+		~Stack()										{ };
+		Stack& operator=(const Stack &other)							{ if (this == &other) return *this;
+													_container = other._container;
+													 return *this; };
+		bool empty() const									{ return _container.empty(); };
+		size_type size() const									{ return _container.size(); };
+		value_type& top()									{ return _container.back(); };
+		const value_type& top() const								{ return _container.back(); };
 	};
 }
-
-
-
 
 #endif

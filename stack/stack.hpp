@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 08:24:27 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/01 10:10:20 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/01 10:23:17 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ namespace ft {
 				typedef Container																	container_type;
 				typedef typename container_type::value_type											value_type;
 				typedef typename container_type::size_type											size_type;
-				typedef typename container_type::reference											reference;
-				typedef typename container_type::const_reference									const_reference;
 	
 				//member functions
 				explicit stack (const container_type& ctnr = container_type())						{ _container(container_type); };

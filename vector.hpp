@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/04 09:13:33 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/05 09:15:43 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,12 @@ namespace ft {
 				vector& operator= (const vector& x);
 
 				//*** CAPACITY ***//
-				//!size_type size() const;
-				//!size_type max_size() const;
+				size_type size() const;
+				size_type max_size() const;
 				//!void resize (size_type n, value_type val = value_type());
-				//!size_type capacity() const;
-				//!bool empty() const;
-				//!void reserve (size_type n);
+				size_type capacity() const;
+				bool empty() const;
+				void reserve (size_type n);
 
 		private:
 				pointer				_array; // Adress of the array - We are using a pointer to allow a dynamic allocation of the memory during runtime of the program
@@ -101,8 +101,8 @@ namespace ft {
 				_alloc.construct(&_array[i], x_array[i]);
 		}
 
-		//!template <class InputIterator>
-		//!vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+		//TODO: template <class InputIterator>
+		//TODO: vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
 		template <typename T, typename Alloc>
 		vector<T, Alloc>::~vector()
@@ -124,6 +124,46 @@ namespace ft {
 			return (*this);
 		}
 
+
+		//***   CAPACITY   ***//
+
+		template <typename T, typename Alloc>
+		size_type vector<T, Alloc>::size() const
+		{
+			return (this->_size);
+		}
+
+		template <typename T, typename Alloc>
+		size_type vector<T, Alloc>::max_size() const
+		{
+			return (std::numeric_limits<size_type>::max());
+		}
+
+		//TODO: void resize (size_type n, value_type val = value_type());
+
+		template <typename T, typename Alloc>
+		size_type vector<T, Alloc>::capacity() const
+		{
+			return (this->_capacity);
+		}
+
+		template <typename T, typename Alloc>
+		bool vector<T, Alloc>::empty() const
+		{
+			return (this->size() == 0);
+		}
+
+		template <typename T, typename Alloc>
+		void vector<T, Alloc>::reserve (size_type n)
+		{
+			if (n <= this->capacity())
+				return ;
+			if (n > this->max_size())
+				//TODO: throw exception
+			this->_capacity = n;
+			this->_array = _alloc.allocate(this->_capacity);			
+		}
+		
 
 	};
 }

@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/05 09:15:43 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/06 09:12:23 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ namespace ft {
 		**==========================
 		*/
 				//*** MEMBER TYPES ***//
+				
 				typedef T 											value_type;
 				typedef Alloc										allocator_type;
 				typedef typename allocator_type::size_type			size_type;
@@ -46,13 +47,28 @@ namespace ft {
 				~vector ();
 				vector& operator= (const vector& x);
 
+				// *****TODO:     ITERATORS     ****** //
+
 				//*** CAPACITY ***//
+				
 				size_type size() const;
 				size_type max_size() const;
 				//!void resize (size_type n, value_type val = value_type());
 				size_type capacity() const;
 				bool empty() const;
 				void reserve (size_type n);
+
+				//***   ELEMENT ACCESS   ***//
+				reference operator[] (size_type n);
+				const_reference operator[] (size_type n) const;
+				reference at (size_type n);
+				const_reference at (size_type n) const;
+				reference front();
+				const_reference front() const;
+				reference back();
+				const_reference back() const;
+				value_type* data();
+				const value_type* data() const;
 
 		private:
 				pointer				_array; // Adress of the array - We are using a pointer to allow a dynamic allocation of the memory during runtime of the program
@@ -124,6 +140,7 @@ namespace ft {
 			return (*this);
 		}
 
+		// *****TODO:     ITERATORS     ****** //
 
 		//***   CAPACITY   ***//
 
@@ -156,14 +173,88 @@ namespace ft {
 		template <typename T, typename Alloc>
 		void vector<T, Alloc>::reserve (size_type n)
 		{
-			if (n <= this->capacity())
-				return ;
 			if (n > this->max_size())
 				//TODO: throw exception
-			this->_capacity = n;
-			this->_array = _alloc.allocate(this->_capacity);			
+			if (n > this->size())
+			{
+				pointer new_array = _alloc.allocate(n);
+				for (int i = 0; i < this->size(); i++) {
+					this->_alloc.construct(&new_array[i], this->_array[i]);
+					this->_alloc.destroy(&this->array[i]);
+				}
+				this->_alloc.deallocate(this->_array, this->_capacity);
+				//TODO: ?? set_array(n) ?? //
+				this->_capacity= n;
+			}
+		
+		}
+
+		//***   ELEMENT ACCESS   ***//
+		
+		template <typename T, typename Alloc>
+		reference vector<T, Alloc>::operator[] (size_type n)
+		{
+			return (&(this->_array[n]));
 		}
 		
+		template <typename T, typename Alloc>
+		const_reference vector<T, Alloc>::operator[] (size_type n) const
+		{
+			return (&(this->_array[n]));
+		}
+
+		template <typename T, typename Alloc>
+		reference vector<T, Alloc>::at (size_type n)
+		{
+			if (n > this->size())
+				throw std::out_of_range("Elemnt trying to be accessed is out of range\n");
+			return (&(this->_array[n]));
+
+		}
+		
+		template <typename T, typename Alloc>
+		const_reference vector<T, Alloc>::at (size_type n) const
+		{
+			if (n > this->size())
+				throw std::out_of_range("Elemnt trying to be accessed is out of range\n");
+			return (&(this->_array[n]));
+		}
+
+		template <typename T, typename Alloc>
+		reference vector<T, Alloc>::front()
+		{
+			return (&(this->_array[0]));
+		}
+		
+		template <typename T, typename Alloc>
+		const_reference vector<T, Alloc>::front() const
+		{
+			return (&(this->_array[0]));
+		}
+
+		template <typename T, typename Alloc>
+		reference vector<T, Alloc>::back()
+		{
+			return (&(this->_array[this->size() - 1]));
+		}
+
+		template <typename T, typename Alloc>		
+		const_reference vector<T, Alloc>::back() const
+		{
+			return (&(this->_array[this->size() - 1]));
+		}
+
+		template <typename T, typename Alloc>		
+		value_type* vector<T, Alloc>::data()
+		{
+			return (*(this->_array));
+		}
+
+		template <typename T, typename Alloc>		
+		const value_type* vector<T, Alloc>::data() const
+		{
+			return (*(this->_array));
+		}
 
 	};
 }

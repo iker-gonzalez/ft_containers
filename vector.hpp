@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/06 09:12:23 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/13 08:22:21 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ namespace ft {
 				typedef typename allocator_type::const_reference	const_reference;
 				typedef typename allocator_type::pointer			pointer;
 				typedef typename allocator_type::const_pointer		const_pointer;
+				typedef typename ft::random_access_iterator<value_type> iterator;
 
 				//*** CONSTRUCTORS - DESTRUCTOR - OPERATOR= ***//
 
@@ -48,6 +49,7 @@ namespace ft {
 				vector& operator= (const vector& x);
 
 				// *****TODO:     ITERATORS     ****** //
+				
 
 				//*** CAPACITY ***//
 				
@@ -156,7 +158,11 @@ namespace ft {
 			return (std::numeric_limits<size_type>::max());
 		}
 
-		//TODO: void resize (size_type n, value_type val = value_type());
+		template <typename T, typename Alloc>
+		void vector<T, Alloc>::resize(size_type n, value_type val = value_type())
+		{
+			//TODO: pop_back / push_back to be included here.
+		}
 
 		template <typename T, typename Alloc>
 		size_type vector<T, Alloc>::capacity() const
@@ -174,7 +180,7 @@ namespace ft {
 		void vector<T, Alloc>::reserve (size_type n)
 		{
 			if (n > this->max_size())
-				//TODO: throw exception
+				throw std::length_error("Trying to reserve more space than max_size => vector::reserve");
 			if (n > this->size())
 			{
 				pointer new_array = _alloc.allocate(n);

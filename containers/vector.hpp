@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/15 13:24:39 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/15 13:42:35 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,10 @@ namespace ft {
 				bool empty() const;
 				void reserve (size_type n);
 
-				//***   ELEMENT ACCESS   ***//
+				//****************** ******************//
+				//*********** ELEMENT ACCESS **********//
+				//****************** ******************//
+
 				reference operator[] (size_type n);
 				const_reference operator[] (size_type n) const;
 				reference at (size_type n);
@@ -77,6 +80,11 @@ namespace ft {
 				const_reference back() const;
 				value_type* data();
 				const value_type* data() const;
+
+				//****************** ******************//
+				//************** MODIFIERS ************//
+				//****************** ******************//
+
 
 		private:
 				pointer				_array; // Adress of the array - We are using a pointer to allow a dynamic allocation of the memory during runtime of the program

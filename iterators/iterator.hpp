@@ -6,15 +6,12 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 14:00:25 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/15 17:21:11 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/15 18:10:21 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
-
-# include <iostream>
-# include <memory>
 
 //?https://cplusplus.com/reference/iterator/iterator/
 

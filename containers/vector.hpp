@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/13 08:22:21 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/15 13:24:39 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,9 @@ namespace ft {
 		**    DECLARATION
 		**==========================
 		*/
+				//********** *********//
 				//*** MEMBER TYPES ***//
+				//********** *********//
 				
 				typedef T 											value_type;
 				typedef Alloc										allocator_type;
@@ -36,7 +38,10 @@ namespace ft {
 				typedef typename allocator_type::const_pointer		const_pointer;
 				typedef typename ft::random_access_iterator<value_type> iterator;
 
+
+				//********************** **********************//
 				//*** CONSTRUCTORS - DESTRUCTOR - OPERATOR= ***//
+				//********************** **********************//
 
 				//default empty constructor
 				explicit vector (const allocator_type& alloc = allocator_type());
@@ -50,8 +55,9 @@ namespace ft {
 
 				// *****TODO:     ITERATORS     ****** //
 				
-
-				//*** CAPACITY ***//
+				//****************** ******************//
+				//************** CAPACITY *************//
+				//****************** ******************//
 				
 				size_type size() const;
 				size_type max_size() const;
@@ -85,8 +91,9 @@ namespace ft {
 		**==========================
 		*/
 		
-
-		//***   CONSTRUCTORS - DESTRUCTOR - OPERATOR=   ***//
+		//********************** **********************//
+		//*** CONSTRUCTORS - DESTRUCTOR - OPERATOR= ***//
+		//********************** **********************//
 
 		template <typename T, typename Alloc>
 		vector<T, Alloc>::vector(const allocator_type& alloc)
@@ -144,7 +151,9 @@ namespace ft {
 
 		// *****TODO:     ITERATORS     ****** //
 
-		//***   CAPACITY   ***//
+		//****************** ******************//
+		//************** CAPACITY *************//
+		//****************** ******************//
 
 		template <typename T, typename Alloc>
 		size_type vector<T, Alloc>::size() const
@@ -195,7 +204,9 @@ namespace ft {
 		
 		}
 
-		//***   ELEMENT ACCESS   ***//
+		//****************** ******************//
+		//*********** ELEMENT ACCESS **********//
+		//****************** ******************//
 		
 		template <typename T, typename Alloc>
 		reference vector<T, Alloc>::operator[] (size_type n)
@@ -215,7 +226,6 @@ namespace ft {
 			if (n > this->size())
 				throw std::out_of_range("Elemnt trying to be accessed is out of range\n");
 			return (&(this->_array[n]));
-
 		}
 		
 		template <typename T, typename Alloc>
@@ -261,8 +271,116 @@ namespace ft {
 		{
 			return (*(this->_array));
 		}
-
 	};
+
+	/*
+	**==========================
+	**    NON MEMBER FUNCTIONS
+	**==========================
+	*/
+
+	//****************** ******************//
+	//******** RELATIONAL OPERATORS *******//
+	//****************** ******************//
+
+	template <class T, class Alloc>
+	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (int i = 0; i < lhs.size(); i++) {
+				if (lhs._array[i] != rhs._array[i])
+					return false;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	template <class T, class Alloc>
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (int i = 0; i < lhs.size(); i++) {
+				if (lhs._array[i] != rhs._array[i])
+					return true;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	template <class T, class Alloc>
+	bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (int i = 0; i < lhs.size(); i++) {
+				if (lhs._array[i] < rhs._array[i])
+					return true;
+			}
+			return false;
+		}
+		if (lhs.size() < rhs.size())
+			return true;
+		return false;
+	}
+
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (int i = 0; i < lhs.size(); i++) {
+				if (lhs._array[i] <= rhs._array[i])
+					return true;
+			}
+			return false;
+		}
+		if (lhs.size() <= rhs.size())
+			return true;
+		return false;
+	}
+
+	template <class T, class Alloc>
+	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (int i = 0; i < lhs.size(); i++) {
+				if (lhs._array[i] > rhs._array[i])
+					return true;
+			}
+			return false;
+		}
+		if (lhs.size() > rhs.size())
+			return true;
+		return false;
+	}
+
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
+	{
+		if (lhs.size() == rhs.size())
+		{
+			for (int i = 0; i < lhs.size(); i++) {
+				if (lhs._array[i] >= rhs._array[i])
+					return true;
+			}
+			return false;
+		}
+		if (lhs.size() >= rhs.size())
+			return true;
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
 }
 
 

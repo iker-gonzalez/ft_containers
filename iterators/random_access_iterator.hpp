@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 13:43:53 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/16 10:27:00 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:16:03 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ namespace ft {
 						typedef random_access_iterator<T>					iterator;
 
 				protected:
-							pointer											_ptr;
+						pointer												_ptr;
 			
 				//*************** ***************//
 				//******* CANONICAL FORM ********//
@@ -58,15 +58,33 @@ namespace ft {
 				//*************** ***************//
 				//****** OPERATOR OVERLOAD ******//
 				//*************** ***************//
+
 				bool operator== (const iterator& a, const iterator& b) { return a._ptr == b._ptr; };
 				bool operator!= (const iterator& a, const iterator& b) { return a._ptr != b._ptr; };
+				//dereferenced as an rvalue
 				reference operator* () { return *_ptr};
 				reference operator* () const { return *_ptr};
 				pointer operator-> () const { return _ptr};
 				iterator& operator++ (void) { (this->_ptr)++; return *this };
-				iterator operator++ (void) { iterator it = *this; (this->_ptr)++; return it; };
+				iterator operator++ (int) { iterator it = *this; (this->_ptr)++; return it; };
 				iterator& operator-- (void) { (this->_ptr)--; return *this };
-				iterator operator-- (void) { iterator it = *this; (this->_ptr)--; return it; };
+				iterator operator-- (int) { iterator it = *this; (this->_ptr)--; return it; };
+				//Arithmetic operators + and - between an iterator and an integer value.
+				iterator operator+ (int nb, iterator itr) { return iterator(itr._ptr + n); };
+				iterator operator- (int nb, iterator itr) { return iterator(itr._ptr - n); };
+				//Substracting an iterator from another
+				difference_type operator- (const iterator b) { return this->_ptr - b._ptr; };
+				//compound assignment operations += and -=
+				iterator& operator+= (difference_type n) { this->_ptr += n; return *this};
+				iterator& operator-= (difference_type n) { this->_ptr -= n; return *this};
+				//comparation between two iterators
+				bool operator > (const iterator b) { return this->_ptr > b._ptr; };
+				bool operator >= (const iterator b) { return this->_ptr >= b._ptr; };
+				bool operator < (const iterator b) { return this->_ptr < b._ptr; };
+				bool operator <= (const iterator b) { return this->_ptr <= b._ptr; };
+				//offset dereference operator ([])
+				reference operator[] (difference_type n) { return (*(this->_ptr + n)); };
+				
 
 
 

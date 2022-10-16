@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 16:50:24 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/15 18:14:57 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/16 11:24:05 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@
 	//          pointer                //      The type of a pointer to an element the iterator can point to             //
 	//          reference              //      The type of a reference to an element the iterator can point to           //
 	//          iterator_category      //      The iterator category. It can be one of these:                            //
-	//                .                //     												1. input_iterator_tag        //
-	//                .                //													2. output_iterator_tag       //
-	//                .                //													3. forward_iterator_tag      //
-	//                .                //													4. bidirectional_iterator_tag//
-	//                .                //													5. random_access_iterator_tag//
+	//                .                //      1. input_iterator_tag                                                     //
+	//                .                //      2. output_iterator_tag                                                    //
+	//                .                //      3. forward_iterator_tag                                                   //
+	//                .                //      4. bidirectional_iterator_tag                                             //
+	//                .                //      5. random_access_iterator_tag                                             //
 	//********************************************************* *********************************************************//
 
 namespace ft {

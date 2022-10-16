@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 13:43:53 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/16 09:40:32 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/16 10:27:00 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,18 @@ namespace ft {
 				//*************** ***************//
 				//****** OPERATOR OVERLOAD ******//
 				//*************** ***************//
-						
+				bool operator== (const iterator& a, const iterator& b) { return a._ptr == b._ptr; };
+				bool operator!= (const iterator& a, const iterator& b) { return a._ptr != b._ptr; };
+				reference operator* () { return *_ptr};
+				reference operator* () const { return *_ptr};
+				pointer operator-> () const { return _ptr};
+				iterator& operator++ (void) { (this->_ptr)++; return *this };
+				iterator operator++ (void) { iterator it = *this; (this->_ptr)++; return it; };
+				iterator& operator-- (void) { (this->_ptr)--; return *this };
+				iterator operator-- (void) { iterator it = *this; (this->_ptr)--; return it; };
+
+
+
 
 
 

@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 13:43:53 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/15 18:12:20 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/16 09:40:32 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 #define RANDOM_ACCESS_ITERATOR_HPP
 
 //?https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator
+//?https://cplusplus.com/reference/iterator/RandomAccessIterator/
+
+/* 
+	Random-access iterators are iterators that can be used to access elements
+	at an arbitrary offset position relative to the element they point to, offering
+	the same functionality as pointers.
+
+	Random-access iterators are the most complete iterators in terms of functionality.
+	All pointer types are also valid random-access iterators.
+
+	There is not a single type of random-access iterator: Each container may define its
+	own specific iterator type able to iterate through it and access its elements. But all
+	random access iterators support -at least- the following operations specified on this library.
+*/
 
 namespace ft {
 		template<typename T>
@@ -23,8 +37,32 @@ namespace ft {
 						typedef T											value_type;
 						typedef T*											pointer;
 						typedef T&											reference;
-						typedef	std::ptrdiff_t						difference_type;
+						typedef	std::ptrdiff_t								difference_type;
 						typedef random_access_iterator<T>					iterator;
+
+				protected:
+							pointer											_ptr;
+			
+				//*************** ***************//
+				//******* CANONICAL FORM ********//
+				//*************** ***************//
+				
+				public:
+						random_access_iterator(void): _ptr(NULL) { };
+						random_access_iterator(pointer _ptr): _ptr(_ptr) { };
+						random_access_iterator(random_access_iterator const& src): { *this = src; };
+						random_access_iterator& operator= (const random_access_iterator& cp) 
+						{ if (this != &cp) _ptr = cp._ptr; return *this; };
+						~random_access_iterator(void) { };
+
+				//*************** ***************//
+				//****** OPERATOR OVERLOAD ******//
+				//*************** ***************//
+						
+
+
+
+				
 	};
 }
 

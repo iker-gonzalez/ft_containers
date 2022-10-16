@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/15 13:42:35 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/16 09:57:41 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,11 @@ namespace ft {
 		//*** CONSTRUCTORS - DESTRUCTOR - OPERATOR= ***//
 		//********************** **********************//
 
-		template <typename T, typename Alloc>
-		vector<T, Alloc>::vector(const allocator_type& alloc)
+		//Default constructor. Constructs an empty container with a default-constructed allocator.
+		vector(void): _size(0), _capacity(0), _array(NULL) { };
+
+		//Constructs an empty container with the given allocator alloc.
+		vector(const allocator_type& alloc)
 		{
 			this->_size = 0;
 			this->_capacity = 0;
@@ -112,19 +115,19 @@ namespace ft {
 			this->_array = NULL;
 		}
 		
-		template <typename T, typename Alloc>
-		vector<T, Alloc>::vector (size_type n, const value_type& val, const allocator_type& alloc)
+		//Constructs the container with count copies of elements with value value.
+		vector (size_type n, const value_type& val, const allocator_type& alloc)
 		{
 			this->_size = n;
 			this->_capacity = n;
 			this->_alloc = alloc;
 			this->_array = _alloc.allocate(this->_capacity);
 			for (size_type i = 0; i < n; i++)
-				this->_array[i] = val;
+				_alloc.construct(&_array[i], val);
 		}
 
-		template <typename T, typename Alloc>
-		vector<T, Alloc>::vector (const vector& x)
+		//Copy constructor. Constructs the container with the copy of the contents of x.
+		vector (const vector& x)
 		{
 			this->_size = x._size;
 			this->_capacity = x._capacity;
@@ -137,16 +140,14 @@ namespace ft {
 		//TODO: template <class InputIterator>
 		//TODO: vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
-		template <typename T, typename Alloc>
-		vector<T, Alloc>::~vector()
+		~vector(void)
 		{
 			for (size_t i = 0; i < this->_size; i++)
 				this->_alloc.destroy(&this->_array[i]);
 			this->_alloc.deallocate(this->_array, this->_capacity);
 		}
 
-		template <typename T, typename Alloc>
-		vector<T, Alloc>::vector& operator= (const vector& x)
+		vector& operator= (const vector& x)
 		{
 			for (size_t i = 0; i < this->_size; i++)
 				this->_alloc.destroy(&this->_array[i]);
@@ -163,38 +164,32 @@ namespace ft {
 		//************** CAPACITY *************//
 		//****************** ******************//
 
-		template <typename T, typename Alloc>
-		size_type vector<T, Alloc>::size() const
+		size_type size() const
 		{
 			return (this->_size);
 		}
 
-		template <typename T, typename Alloc>
-		size_type vector<T, Alloc>::max_size() const
+		size_type max_size() const
 		{
 			return (std::numeric_limits<size_type>::max());
 		}
 
-		template <typename T, typename Alloc>
-		void vector<T, Alloc>::resize(size_type n, value_type val = value_type())
+		void resize(size_type n, value_type val = value_type())
 		{
 			//TODO: pop_back / push_back to be included here.
 		}
 
-		template <typename T, typename Alloc>
-		size_type vector<T, Alloc>::capacity() const
+		size_type capacity() const
 		{
 			return (this->_capacity);
 		}
 
-		template <typename T, typename Alloc>
-		bool vector<T, Alloc>::empty() const
+		bool empty() const
 		{
 			return (this->size() == 0);
 		}
 
-		template <typename T, typename Alloc>
-		void vector<T, Alloc>::reserve (size_type n)
+		void reserve (size_type n)
 		{
 			if (n > this->max_size())
 				throw std::length_error("Trying to reserve more space than max_size => vector::reserve");
@@ -216,66 +211,56 @@ namespace ft {
 		//*********** ELEMENT ACCESS **********//
 		//****************** ******************//
 		
-		template <typename T, typename Alloc>
-		reference vector<T, Alloc>::operator[] (size_type n)
+		reference operator[] (size_type n)
 		{
 			return (&(this->_array[n]));
 		}
 		
-		template <typename T, typename Alloc>
-		const_reference vector<T, Alloc>::operator[] (size_type n) const
+		const_reference operator[] (size_type n) const
 		{
 			return (&(this->_array[n]));
 		}
 
-		template <typename T, typename Alloc>
-		reference vector<T, Alloc>::at (size_type n)
+		reference at (size_type n)
 		{
 			if (n > this->size())
 				throw std::out_of_range("Elemnt trying to be accessed is out of range\n");
 			return (&(this->_array[n]));
 		}
 		
-		template <typename T, typename Alloc>
-		const_reference vector<T, Alloc>::at (size_type n) const
+		const_reference at (size_type n) const
 		{
 			if (n > this->size())
 				throw std::out_of_range("Elemnt trying to be accessed is out of range\n");
 			return (&(this->_array[n]));
 		}
 
-		template <typename T, typename Alloc>
-		reference vector<T, Alloc>::front()
+		reference front()
 		{
 			return (&(this->_array[0]));
 		}
 		
-		template <typename T, typename Alloc>
-		const_reference vector<T, Alloc>::front() const
+		const_reference front() const
 		{
 			return (&(this->_array[0]));
 		}
 
-		template <typename T, typename Alloc>
-		reference vector<T, Alloc>::back()
+		reference back()
 		{
 			return (&(this->_array[this->size() - 1]));
 		}
 
-		template <typename T, typename Alloc>		
-		const_reference vector<T, Alloc>::back() const
+		const_reference back() const
 		{
 			return (&(this->_array[this->size() - 1]));
 		}
 
-		template <typename T, typename Alloc>		
-		value_type* vector<T, Alloc>::data()
+		value_type* data()
 		{
 			return (*(this->_array));
 		}
 
-		template <typename T, typename Alloc>		
-		const value_type* vector<T, Alloc>::data() const
+		const value_type* data() const
 		{
 			return (*(this->_array));
 		}

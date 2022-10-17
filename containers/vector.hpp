@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/16 12:04:55 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/17 09:13:18 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,18 @@ namespace ft {
 				//*** MEMBER TYPES ***//
 				//********** *********//
 				
-				typedef T 											value_type;
-				typedef Alloc										allocator_type;
-				typedef typename allocator_type::size_type			size_type;
-				typedef typename allocator_type::reference			reference;
-				typedef typename allocator_type::const_reference	const_reference;
-				typedef typename allocator_type::pointer			pointer;
-				typedef typename allocator_type::const_pointer		const_pointer;
-				typedef typename ft::random_access_iterator<value_type> iterator;
+				typedef T 															value_type;
+				typedef Alloc														allocator_type;
+				typedef typename allocator_type::reference							reference;
+				typedef typename allocator_type::const_reference					const_reference;
+				typedef typename allocator_type::pointer							pointer;
+				typedef typename allocator_type::const_pointer						const_pointer;
+				typedef typename ft::random_access_iterator<value_type>				iterator;
+				typedef typename ft::random_access_iterator<const value_type>		const_iterator;
+				//TODO: reverse_iterator
+				//TODO: reverse_const_iterator
+				typedef typename std::ptrdiff_t										difference_type;
+				typedef typename std::size_t										size_type;
 
 
 				//********************** **********************//
@@ -54,14 +58,6 @@ namespace ft {
 				vector (const vector& x);
 				~vector ();
 				vector& operator= (const vector& x);
-
-				//****************** ******************//
-				//************** ITERATORS ************//
-				//****************** ******************//
-				
-				typedef typename ft::random_access_iterator<value_type>				iterator;
-				typedef typename ft::random_access_iterator<const value_type>		const_iterator;
-				//TODO: reverse_iterator
 				
 				//****************** ******************//
 				//************** CAPACITY *************//
@@ -69,7 +65,7 @@ namespace ft {
 				
 				size_type size() const;
 				size_type max_size() const;
-				//!void resize (size_type n, value_type val = value_type());
+				void resize (size_type n, value_type val = value_type());
 				size_type capacity() const;
 				bool empty() const;
 				void reserve (size_type n);
@@ -93,6 +89,11 @@ namespace ft {
 				//************** MODIFIERS ************//
 				//****************** ******************//
 
+				void assign (size_type n, const value_type& val);
+				//TODO: template <class InputIterator>  void assign (InputIterator first, InputIterator last);
+				void push_back (const value_type& val);
+				void pop_back();
+				void clear();
 
 		private:
 				pointer				_ptr; // Adress of the array - We are using a pointer to allow a dynamic allocation of the memory during runtime of the program
@@ -142,23 +143,22 @@ namespace ft {
 			this->_alloc = x._alloc;
 			this->_ptr = _alloc.allocate(this->_capacity);
 			for(size_t i = 0; i < this->_size; i++)
-				_alloc.construct(&_ptr[i], x_ptr[i]);
+				_alloc.construct(&_ptr[i], x._ptr[i]);
 		}
 
-		//TODO: template <class InputIterator>
-		//TODO: vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+		//TODO: template <class InputIterator> vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
 
 		~vector(void)
 		{
 			for (size_t i = 0; i < this->_size; i++)
-				this->_alloc.destroy(&this->_ptr[i]);
+				this->_alloc.destroy(this->_ptr[i]);
 			this->_alloc.deallocate(this->_ptr, this->_capacity);
 		}
 
 		vector& operator= (const vector& x)
 		{
 			for (size_t i = 0; i < this->_size; i++)
-				this->_alloc.destroy(&this->_ptr[i]);
+				this->_alloc.destroy(this->_ptr[i]);
 			this->_size = x._size;
 			this->_capacity = x._capacity;
 			for (size_type i = 0; i < n; i++)
@@ -228,15 +228,12 @@ namespace ft {
 			if (n > this->size())
 			{
 				pointer new_ptr = _alloc.allocate(n);
-				for (int i = 0; i < this->size(); i++) {
+				for (int i = 0; i < this->size(); i++)
 					this->_alloc.construct(&new_ptr[i], this->_ptr[i]);
-					this->_alloc.destroy(&this->array[i]);
-				}
 				this->_alloc.deallocate(this->_ptr, this->_capacity);
-				//TODO: ?? set_ptr(n) ?? //
+				this->_ptr = new_ptr;
 				this->_capacity= n;
 			}
-		
 		}
 
 		//****************** ******************//
@@ -296,8 +293,57 @@ namespace ft {
 		{
 			return (*(this->_ptr));
 		}
-	};
 
+		//****************** ******************//
+		//************** MODIFIERS ************//
+		//****************** ******************//
+
+		//Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
+		void assign (size_type n, const value_type& val)
+		{
+			for (int i = 0; i < _size; i++)
+				_alloc.destroy(_ptr[i]);
+			if (n > _capacity) 
+			{
+				_alloc.deallocate(_ptr, _capacity);
+				_alloc.allocate(_ptr, n);
+				this->_capacity = n;
+				this->_size = n;
+			}
+			for (i = 0; i < _size; i++)
+				_alloc.construct(_ptr[i], val);
+		}
+
+		//TODO: template <class InputIterator>  void assign (InputIterator first, InputIterator last);
+
+		void push_back (const value_type& val)
+		{
+			if ((_size + 1) > _capacity) 
+			{
+				if (!this->_size)
+					reserve(1);
+				else
+					this->reserve(this->_capacity * 2);
+			}
+			_alloc.construct(_ptr[_size], val);
+			this->_size += 1;
+		}
+
+		void pop_back() 
+		{
+			_alloc.destroy(this->_ptr[_size - 1]);
+			this->_size--;
+		}
+
+		void clear()
+		{
+			for (int i = 0; i < _size; i++)
+				_alloc.destroy(_ptr[i]);
+			this->_size = 0;
+		}
+
+	};
+		
 	/*
 	**==========================
 	**    NON MEMBER FUNCTIONS

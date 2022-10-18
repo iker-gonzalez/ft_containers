@@ -6,12 +6,14 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 13:43:53 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/16 11:16:03 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/18 08:39:44 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RANDOM_ACCESS_ITERATOR_HPP
 #define RANDOM_ACCESS_ITERATOR_HPP
+
+#include "iterator.hpp"
 
 //?https://en.cppreference.com/w/cpp/named_req/RandomAccessIterator
 //?https://cplusplus.com/reference/iterator/RandomAccessIterator/

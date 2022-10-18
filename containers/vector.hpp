@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/17 09:13:18 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/18 09:02:03 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ namespace ft {
 				//TODO: template <class InputIterator>  void assign (InputIterator first, InputIterator last);
 				void push_back (const value_type& val);
 				void pop_back();
+				iterator insert( const_iterator pos, const T& value );
 				void clear();
 
 		private:
@@ -208,7 +209,18 @@ namespace ft {
 
 		void resize(size_type n, value_type val = value_type())
 		{
-			//TODO: pop_back / push_back to be included here.
+			if (n < this->_size)
+			{
+				for (i = n; i < _size; i++)
+					pop_back();
+			}
+			else
+			{
+				if (n > this->_capacity)
+					_alloc.reserve(n * 2);
+				for (i = _size; i < n; i++)
+					_alloc.push_back(val);
+			}
 		}
 
 		size_type capacity() const
@@ -334,6 +346,21 @@ namespace ft {
 			_alloc.destroy(this->_ptr[_size - 1]);
 			this->_size--;
 		}
+
+		//inserts value before pos.
+		iterator insert(const_iterator pos, const T& value)
+		{
+			//?size_type position = pos - _ptr;
+			if (_size == _capacity)
+			{
+				if (!this->_size)
+					reserve(1);
+				else
+				_alloc.reserve(this->_capacity * 2);
+			}
+			//TODO: finish function
+		}
+
 
 		void clear()
 		{

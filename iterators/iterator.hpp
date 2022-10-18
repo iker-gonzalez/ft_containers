@@ -6,12 +6,14 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 14:00:25 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/15 18:10:21 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/18 08:39:30 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ITERATOR_HPP
 #define ITERATOR_HPP
+
+#include "iterator_traits.hpp"
 
 //?https://cplusplus.com/reference/iterator/iterator/
 

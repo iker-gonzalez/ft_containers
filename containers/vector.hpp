@@ -27,9 +27,9 @@ namespace ft {
 		**    DECLARATION
 		**==========================
 		*/
-				//********** *********//
-				//*** MEMBER TYPES ***//
-				//********** *********//
+				//********** ***********//
+				//**** MEMBER TYPES ****//
+				//********** ***********//
 				
 				typedef T 															value_type;
 				typedef Alloc														allocator_type;

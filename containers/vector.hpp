@@ -94,6 +94,7 @@ namespace ft {
 				void push_back (const value_type& val);
 				void pop_back();
 				iterator insert( const_iterator pos, const T& value );
+				//TODO: 
 				void clear();
 
 		private:
@@ -347,7 +348,7 @@ namespace ft {
 			this->_size--;
 		}
 
-		//inserts value before pos.
+		//inserts one value before pos.
 		iterator insert(const_iterator pos, const T& value)
 		{
 			//?size_type position = pos - _ptr;

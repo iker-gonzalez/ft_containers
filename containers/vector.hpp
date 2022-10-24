@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/18 09:02:03 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/24 09:23:15 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ namespace ft {
 				explicit vector (const allocator_type& alloc = allocator_type());
 				//fill constructor - Constructs a container with n elements. Each element is a copy of val.
 				explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
-				//!template <class InputIterator>
-				//!vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+				
+				//TODO:template <class InputIterator>  vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+				
 				vector (const vector& x);
 				~vector ();
 				vector& operator= (const vector& x);
@@ -94,8 +95,18 @@ namespace ft {
 				void push_back (const value_type& val);
 				void pop_back();
 				iterator insert( const_iterator pos, const T& value );
-				//TODO: 
+				void insert (iterator position, size_type n, const value_type& val);
+				//TODO:template <class InputIterator>  void insert (iterator position, InputIterator first, InputIterator last);
+				iterator erase (iterator position);
+				iterator erase (iterator first, iterator last);
+				void swap (vector& x);
 				void clear();
+
+				//****************** ******************//
+				//************** ALLOCATOR ************//
+				//****************** ******************//
+
+				allocator_type get_allocator() const;
 
 		private:
 				pointer				_ptr; // Adress of the array - We are using a pointer to allow a dynamic allocation of the memory during runtime of the program
@@ -351,7 +362,7 @@ namespace ft {
 		//inserts one value before pos.
 		iterator insert(const_iterator pos, const T& value)
 		{
-			//?size_type position = pos - _ptr;
+			size_type position = pos - _ptr;
 			if (_size == _capacity)
 			{
 				if (!this->_size)
@@ -359,15 +370,89 @@ namespace ft {
 				else
 				_alloc.reserve(this->_capacity * 2);
 			}
-			//TODO: finish function
+			for (size_type i = _size; i > position; i--)
+				_ptr[i] = _ptr[i - 1];
+			this->_alloc.construct(this->_ptr[position], value);
+			this->_size++;
+			return (iterator(_ptr + position));
 		}
 
+		//inserts n copies of val before position
+		void insert (iterator position, size_type n, const value_type& val);
+		{
+			size_type position = pos - _ptr;
+			if (_size + n > _capacity)
+			{
+				if (!this->_size)
+					reserve(1);
+				else
+				_alloc.reserve(this->_capacity * 2);
+			}
+			for (size_type i = _size; i > position; i--)
+				_ptr[i + n - 1] = _ptr[i - 1];
+			for (i = 0; i < n; i++)
+				this->_alloc.construct(this->_ptr[i], val);
+			this->_size += n;
+		}
+
+		//TODO:template <class InputIterator>  void insert (iterator position, InputIterator first, InputIterator last);
+
+		//removes the value from position.
+		iterator erase (iterator position)
+		{
+			size_type position = pos - _ptr;
+			for (size_type i = _size; i > position; i--)
+				_ptr[i] = _ptr[i + 1];
+			this->_alloc.destroy(this->_ptr[position], value);
+			this->_size--;
+			return (iterator(_ptr + position));
+		}
+
+		//removes elements from the range[first, last]
+		iterator erase (iterator first, iterator last)
+		{
+			while (first != last)
+			{
+				erase (first);
+				last--;
+			}
+			return (first);
+		}
+
+		//Exchanges the content of the container by the content of x.
+		void swap (vector& x)
+		{
+			size_type capacity_x;
+			size_type size_x;
+			pointer pointer_x;
+
+			capacity_x = x._capacity;
+			size_x = x._size;
+			pointer_x = x._ptr;
+
+			x._capacity = this->_capacity;
+			x._size = this->_size;
+			x._ptr = this->_ptr;
+			
+			this->_capacity = capacity_x;
+			this->_size = size_x;
+			this->_ptr = pointer_x;
+		}
 
 		void clear()
 		{
 			for (int i = 0; i < _size; i++)
 				_alloc.destroy(_ptr[i]);
 			this->_size = 0;
+		}
+
+		//****************** ******************//
+		//************** ALLOCATOR ************//
+		//****************** ******************//
+
+		allocator_type get_allocator() const
+		{
+			return (_alloc);
 		}
 
 	};

@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reverse_iretator.hpp                               :+:      :+:    :+:   */
+/*   reverse_iterator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 08:18:34 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/26 08:43:43 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/26 09:07:55 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATOR_HPP
-#define ITERATOR_HPP
+#ifndef REVERSE_ITERATOR_HPP
+#define REVERSE_ITERATOR_HPP
 
 //?https://en.cppreference.com/w/cpp/iterator/reverse_iterator
 
 #include "iterator_traits.hpp"
+#include "iterator.hpp"
 
 namespace ft {
 		template <class Iter>

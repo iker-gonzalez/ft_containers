@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/24 09:23:15 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/26 09:12:29 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 #include <memory>
 
-#include "random_access_iterator.hpp"
+#include "../iterators/random_access_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
 
 namespace ft {
 	template <class T, class Alloc = std::allocator <T> > 
@@ -39,8 +40,8 @@ namespace ft {
 				typedef typename allocator_type::const_pointer						const_pointer;
 				typedef typename ft::random_access_iterator<value_type>				iterator;
 				typedef typename ft::random_access_iterator<const value_type>		const_iterator;
-				//TODO: reverse_iterator
-				//TODO: reverse_const_iterator
+				typedef typename ft::reverse_iterator<value_type>					reverse_iterator;
+				typedef typename ft::reverse_iterator<const value_type>				const_reverse_iterator;
 				typedef typename std::ptrdiff_t										difference_type;
 				typedef typename std::size_t										size_type;
 
@@ -203,7 +204,25 @@ namespace ft {
 			return const_iterator(_ptr + _size);
 		}
 
-		//TODO: reverse_iterator
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(end());
+		}
+
+		const_reverse_iterator rbegin() const
+		{
+			const_reverse_iterator(end());
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
+
+		const_reverse_iterator rend() const
+		{
+			return const_reverse_iterator(begin());
+		}
 		
 		//****************** ******************//
 		//************** CAPACITY *************//

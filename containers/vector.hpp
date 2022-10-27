@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/26 09:12:29 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/10/27 08:19:48 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -578,9 +578,5 @@ namespace ft {
 		return false;
 	}
 }
-
-
-
-
 
 #endif

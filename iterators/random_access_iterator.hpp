@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 13:43:53 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/26 09:00:00 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/02 08:45:10 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,19 +87,7 @@ namespace ft {
 				bool operator <= (const iterator b) { return this->_ptr <= b._ptr; };
 				//offset dereference operator ([])
 				reference operator[] (difference_type n) { return (*(this->_ptr + n)); };
-				
-
-
-
-
-
-
-				
 	};
 }
-
-
-
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/27 08:19:48 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/03 09:00:35 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,14 @@ namespace ft {
 				_alloc.construct(&_ptr[i], x._ptr[i]);
 		}
 
-		//TODO: template <class InputIterator> vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type());
+		//Constructs the container with the contents of the range [first, last)
+		//TODO>
+		template <class InputIterator> 
+		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(),
+		typename ft::enable_if<!ft::is_integral<InputIt>::value>::type * = 0)
+		{
+			
+		}
 
 		~vector(void)
 		{

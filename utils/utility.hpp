@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 08:45:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/02 09:00:54 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/03 08:20:44 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,14 +151,48 @@ namespace ft {
 	//****************** ******************//
 	//***** PAIR NON MEMBER FUNCTIONS *****//
 	//****************** ******************//
+
+	template< class T1, class T2 >
+	ft::pair<T1, T2> make_pair( T1 t, T2 u )
+	{
+		return (ft::pair<T1, T2>(x, y));
+	}
+
+	template< class T1, class T2 >
+	bool operator==( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
+	{
+		return (lhs.first == rhs.first && lhs.second == rhs.second);
+	}
+
+	template< class T1, class T2 >
+	bool operator!=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
+	{
+		return (lhs.first != rhs.first && lhs.second != rhs.second);
+	}
+
+	template< class T1, class T2 >
+	bool operator<( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
+	{
+		return (lhs.first < rhs.first || !(lhs.first < rhs.first) && lhs.second < rhs.second);
+	}
+
+	template< class T1, class T2 >
+	bool operator<=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
+	{
+		return (lhs.first <= rhs.first || !(lhs.first <= rhs.first) && lhs.second <= rhs.second);
+	}
+
+	template< class T1, class T2 >
+	bool operator>( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
+	{
+		return (lhs.first > rhs.first || !(lhs.first > rhs.first) && lhs.second > rhs.second);
+	}
+
+	template< class T1, class T2 >
+	bool operator>=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
+	{
+		return (lhs.first >= rhs.first || !(lhs.first >= rhs.first) && lhs.second >= rhs.second);
+	}
 }
-
-
-
-
-
-
-
-
 
 #endif

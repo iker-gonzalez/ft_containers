@@ -14,12 +14,10 @@
 #define STACK_HPP
 
 #include <iostream>
-#include <vector>
 
 namespace ft {
-		template <class T, class Container = std::vector<T> >
+		template <class T, class Container = ft::vector<T> >
 		class Stack {
-
 		protected:
 				//member object
 				Container																			_container;

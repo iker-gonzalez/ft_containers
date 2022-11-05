@@ -23,11 +23,6 @@ namespace ft {
 	class vector {
 
 		public:
-		/*
-		**==========================
-		**    DECLARATION
-		**==========================
-		*/
 				//********** ***********//
 				//**** MEMBER TYPES ****//
 				//********** ***********//
@@ -44,7 +39,6 @@ namespace ft {
 				typedef typename ft::reverse_iterator<const value_type>				const_reverse_iterator;
 				typedef typename std::ptrdiff_t										difference_type;
 				typedef typename std::size_t										size_type;
-
 
 				//********************** **********************//
 				//*** CONSTRUCTORS - DESTRUCTOR - OPERATOR= ***//
@@ -117,13 +111,6 @@ namespace ft {
 				size_type 			_size; // size of the array
 				size_type 			_capacity; //size for the memory
 				allocator_type		_alloc;
-
-
-		/*
-		**==========================
-		**    DEFINITION
-		**==========================
-		*/
 
 		//********************** **********************//
 		//*** CONSTRUCTORS - DESTRUCTOR - OPERATOR= ***//

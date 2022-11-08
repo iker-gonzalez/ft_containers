@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   red_black_tree.hpp                                 :+:      :+:    :+:   */
+/*   BST.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikgonzal <ikgonzal@student.42urduliz.com   +#+  +:+       +#+        */
+/*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/11/06 08:31:08 by marvin           ###   ########.fr       */
+/*   Updated: 2022/11/08 07:56:35 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define BINARY_SEARCH_TREE_HPP
 
 //?https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/
+//?https://www.programiz.com/dsa/binary-search-tree
 
 //*** binary search tree definition***//
 /*

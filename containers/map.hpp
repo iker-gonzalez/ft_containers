@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/03 09:19:27 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/09 19:50:57 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 #include <iostream>
 #include "../utils/utility.hpp"
+
+	/*
+	*   Key      Type of keys mapped to elements.
+	*   T        Type of elements mapped to keys.
+	*   Compare  Comparison object used to sort the binary tree.
+	*   Alloc    Object used to manage map storage.
+	*/
 
 namespace ft {
 	template<class Key, class T, class Compare = std::less<Key>,

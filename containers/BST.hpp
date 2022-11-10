@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/11/09 19:52:47 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/10 09:11:04 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 	*/
 
 #include <iostream>
+#include "utility.hpp"
 
 namespace ft {
 	
@@ -47,7 +48,8 @@ namespace ft {
 				//********** ***********//
 
 				typedef Key										key_type;
-				typedef T										value_type;
+				typedef T										mapped_type;
+				typedef ft::pair<const key_type, mapped_type>	value_type;
 				typedef Compare									key_compare;
 				typedef Allocator								allocator_type;
 				typedef typename std::size_t					size_type;
@@ -56,10 +58,11 @@ namespace ft {
 				//**** MEMBER ATTRIBUTES ****//
 				//********** *********** ****//
 				
-				value_type										data;
+				value_type										pair;
 				Bst*											left;
 				Bst*											right;
 				Bst*											parent;
+				int												balance;
 
 		private:
 
@@ -71,5 +74,45 @@ namespace ft {
 				//*********** ********** ****//
 				//**** MEMBER FUNCTIONS *****//
 				//********** *********** ****//
+
+				//*constructor
+				explicit Bst(value_type p = value_type, const key_compare& comp = key_compare,
+						const allocator_type& alloc = allocator_type): pair(p)
+				{
+					this->left = 0;
+					this->right = 0;
+					this->parent = 0;
+					this->balance = 0;
+					this->_comp = comp;
+					this->_alloc = alloc;
+					return ;
+				}
+
+				//*assignment operator
+				Bst& operator=(const Bst other)
+				{
+					this->left = other.left;
+					this->right = other.right;
+					this->parent = other.parent;
+					this->balance = other.balance;
+					this->pair = other->pair;
+					return(*this);
+				}
+
+				//*destructor
+				~Bst () {};
+
+				//*search
+				Bst* search(Bst *root, value_type pair)
+				{
+					if (!root || root->pair.first = pair.first)
+						return (root);
+					if (this->_comp(root->pair.first, pair.first))
+						return (search(root->right, pair));
+					return (search(root->left, pair));
+				}
+				
 	};
 }
+
+#endif

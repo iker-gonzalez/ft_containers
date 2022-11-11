@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/11/10 09:11:04 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/11 08:05:03 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 	//?https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/
 	//?https://www.programiz.com/dsa/binary-search-tree
+	//?https://www.programiz.com/dsa/balanced-binary-tree
 
 	//*** binary search tree definition***//
 	/*
@@ -58,16 +59,22 @@ namespace ft {
 				//**** MEMBER ATTRIBUTES ****//
 				//********** *********** ****//
 				
-				value_type										pair;
-				Bst*											left;
-				Bst*											right;
-				Bst*											parent;
-				int												balance;
+				//value_type									pair;
+				//Bst*											left;
+				//Bst*											right;
+				//Bst*											parent;
+				//int											balance;
 
 		private:
 
 				key_compare										_comp;
 				allocator_type									_alloc;
+				
+				struct node 
+				{
+					value_type pair;
+					struct node *left, *right, *parent;
+				};
 
 		public:
 		
@@ -76,6 +83,7 @@ namespace ft {
 				//********** *********** ****//
 
 				//*constructor
+				
 				explicit Bst(value_type p = value_type, const key_compare& comp = key_compare,
 						const allocator_type& alloc = allocator_type): pair(p)
 				{
@@ -103,13 +111,53 @@ namespace ft {
 				~Bst () {};
 
 				//*search
-				Bst* search(Bst *root, value_type pair)
+				Struct node* search(Struct node* root, value_type pair)
 				{
 					if (!root || root->pair.first = pair.first)
 						return (root);
 					if (this->_comp(root->pair.first, pair.first))
 						return (search(root->right, pair));
 					return (search(root->left, pair));
+				}
+
+				// Create a node
+				struct node *new_node(value_type pair) 
+				{
+					struct node *temp = this->_alloc.allocate(sizeof(struct node));
+					temp->pair = pair;
+					temp->left = NULL;
+					temp->right = NULL;
+					return temp;
+				}
+
+				// Insert new node
+				struct node* insert(Struct node* node, value_type other_pair)
+				{
+					// Return a new node if the tree is empty
+					if (!node) 
+						return (new_node(other_pair));
+				 	// Traverse to the right place and insert the node
+					if (other_pair.first < node->pair.first)
+						node->left = insert(node->left, other_pair);
+					else
+						node->right = insert(node->right, other_pair);
+					return node;
+				}
+
+				// Inorder Traversal
+				void inorder(struct node *root) 
+				{
+					if (root != NULL) 
+					{
+						// Traverse left
+						inorder(root->left);
+
+						// Traverse root
+						cout << root->key << " -> ";
+
+						// Traverse right
+						inorder(root->right);
+					}
 				}
 				
 	};

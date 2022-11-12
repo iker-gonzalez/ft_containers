@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 08:24:27 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 12:17:23 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 13:42:21 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,5 @@ namespace ft {
 				typedef Node*														node_ptr;
 	};
 }
+
+#endif

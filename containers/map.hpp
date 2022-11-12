@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/09 19:50:57 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/12 13:32:49 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include "../utils/utility.hpp"
+#include "BST.hpp"
 
 	/*
 	*   Key      Type of keys mapped to elements.
@@ -27,6 +28,11 @@ namespace ft {
 	template<class Key, class T, class Compare = std::less<Key>,
 	class Allocator = std::allocator<std::pair<const Key, T>>
 	> class map {
+
+		private:
+		
+			/** Member Type **/
+			typedef Bst<ft::pair<Key, T>, Compare, Allocator>	BST;
 		
 		public:
 				//********** ***********//
@@ -43,6 +49,10 @@ namespace ft {
 				typedef value_type&								reference;
 				typedef typename Allocator::pointer				pointer;
 				typedef typename Allocator::const_pointer		const_pointer;
+				//!iterator
+				//!const_iterator
+				//!reverse_iterator
+				//!const_reverse_iterator
 
 				//********** ***********//
 				//*** MEMBER CLASSES ***//
@@ -68,9 +78,94 @@ namespace ft {
 								value_compare( Compare c ):		_comp(c) {};
 				};
 
+				//************ ************//
+				//*** MEMBER ATTRIBUTES ***//
+				//************ ************//
+				
+				BST					_tree;
+				BST*				_root;
+				BST*				_end;
+				size_type			_size;
+				key_compare			_comp;
+				allocator_type		_alloc;
+
+				//************ ************//
+				//*** MEMBER FUNCTIONS ****//
+				//************ ************//
+
+				//********************** **********************//
+				//*** CONSTRUCTORS - DESTRUCTOR - OPERATOR= ***//
+				//********************** **********************//
+
+				//default empty constructor
+				explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+				{
+					this->_root = 0;
+					this->_end = 0;
+					//creates an empty node (root) with no values
+					this->_end = this->_Tree.insert(this->_root, value_type());
+					this->_size = 0;
+					this->_comp = comp;
+					this->_alloc = alloc;
+					return ;
+				}
+
+				//TODO: template <class InputIterator>map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+
+				//TODO: map (const map& x);
+
+				//destructor
+				~map(void)
+				{
+					this->_tree.clean(&(this->_root));
+				}
+
+				//TODO: map& operator= (const map& x);
+
+				//************ ************//
+				//******* ITERATORS *******//
+				//************ ************//
+
+				//TODO: iterator functions
+
+				//************ ************//
+				//******* CAPACITY ********//
+				//************ ************//
+
+				bool empty() const
+				{
+					return (this->_size == 0);
+				}
+
+				size_type size() const
+				{
+					return (this->_size);
+				}
+
+				//Returns the maximum number of elements that the map container can hold.
+				size_type max_size() const
+				{
+					return (this->_tree.max_size());
+				}
+
+				//*************** ***************//
+				//******* ELEMENT ACCESS ********//
+				//*************** ***************//
+
+				//TODO: mapped_type& operator[] (const key_type& k)
+				//TODO: mapped_type& at (const key_type& k);
+				//TODO: const mapped_type& at (const key_type& k) const;
+
+				//************* ************//
+				//******* MODIFIERS ********//
+				//************* ************//
+
+				
+
+
+
 	};
 
 }
-
 
 #endif

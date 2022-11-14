@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/11/12 13:26:08 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/14 09:08:19 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ namespace ft {
 				value_type										data;
 				Bst*											left;
 				Bst*											right;
-				//Bst*											parent;
+				Bst*											parent;
 				//int											balance;
 
 		private:
@@ -88,7 +88,7 @@ namespace ft {
 				{
 					this->left = 0;
 					this->right = 0;
-					//this->parent = 0;
+					this->parent = 0;
 					//this->balance = 0;
 					this->_comp = comp;
 					this->_alloc = alloc;
@@ -100,7 +100,7 @@ namespace ft {
 				{
 					this->left = other.left;
 					this->right = other.right;
-					//this->parent = other.parent;
+					this->parent = other.parent;
 					//this->balance = other.balance;
 					this->data = other->data;
 					return(*this);
@@ -131,10 +131,16 @@ namespace ft {
 					}
 				 	// Traverse to the left if data key is smaller than current node's key
 					if (this->_comp(data.first, node->data.first))
+					{
 						node->left = insertNode(node->left, data);
+						node->left->parent = node;
+					}
 					// Traverse to the right if data key is bigger than current node's key
 					else if (this->_comp(node->data.first, data.first))
+					{
 						node->right = insertNode(node->right, data);
+						node->right->parent = node;
+					}
 					return (node);
 				}
 
@@ -163,6 +169,8 @@ namespace ft {
 						if (node->left == NULL) 
 						{
 							Bst *temp = node->right;
+							if (temp)
+								temp->parent = node->parent;
 							this->_alloc.destroy(node);
 							this->_alloc.deallocate(node, 1);
 							return (temp);
@@ -170,11 +178,14 @@ namespace ft {
 						else if (node->right == NULL) 
 						{
 							Bst *temp = root->left;
+							if (temp)
+								temp->parent = node->parent;
 							this->_alloc.destroy(node);
 							this->_alloc.deallocate(node, 1);
 							return (temp);
 						}
 
+						//TODO: missing parent logic implementation
 						// If the node has //! two children //
 						
 						// 1) Get the inorder successor of that node.

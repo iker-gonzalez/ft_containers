@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/12 13:32:49 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/17 09:09:45 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 #include <iostream>
 #include "../utils/utility.hpp"
 #include "BST.hpp"
+#include "../iterators/map_iterator.hpp"
+#include "../iterators/reverse_iterator.hpp"
 
 	/*
 	*   Key      Type of keys mapped to elements.
@@ -32,27 +34,27 @@ namespace ft {
 		private:
 		
 			/** Member Type **/
-			typedef Bst<ft::pair<Key, T>, Compare, Allocator>	BST;
+			typedef Bst<ft::pair<Key, T>, Compare, Allocator>	Bst;
 		
 		public:
 				//********** ***********//
 				//**** MEMBER TYPES ****//
 				//********** ***********//
 
-				typedef Key										key_type;
-				typedef T										mapped_type;
-				typedef typename ft::pair<const Key, T>			value_type;
-				typedef typename std::size_t					size_type;
-				typedef typename std::ptrdiff_t					difference_type;
-				typedef Compare									key_compare;
-				typedef Allocator								allocator_type;
-				typedef value_type&								reference;
-				typedef typename Allocator::pointer				pointer;
-				typedef typename Allocator::const_pointer		const_pointer;
-				//!iterator
-				//!const_iterator
-				//!reverse_iterator
-				//!const_reverse_iterator
+				typedef Key													key_type;
+				typedef T													mapped_type;
+				typedef typename ft::pair<const Key, T>						value_type;
+				typedef typename std::size_t								size_type;
+				typedef typename std::ptrdiff_t								difference_type;
+				typedef Compare												key_compare;
+				typedef Allocator											allocator_type;
+				typedef value_type&											reference;
+				typedef typename Allocator::pointer							pointer;
+				typedef typename Allocator::const_pointer					const_pointer;
+				typedef ft::map_iterator<Bst*, value_type>					iterator;
+				typedef ft::map_iterator<const Bst*, const value_type>		const_iterator;
+				typedef ft::reverse_iterator<iterator>						reverse_iterator;
+				typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 				//********** ***********//
 				//*** MEMBER CLASSES ***//
@@ -82,9 +84,9 @@ namespace ft {
 				//*** MEMBER ATTRIBUTES ***//
 				//************ ************//
 				
-				BST					_tree;
-				BST*				_root;
-				BST*				_end;
+				Bst					_tree;
+				Bst*				_root;
+				Bst*				_end;
 				size_type			_size;
 				key_compare			_comp;
 				allocator_type		_alloc;
@@ -126,7 +128,48 @@ namespace ft {
 				//******* ITERATORS *******//
 				//************ ************//
 
-				//TODO: iterator functions
+				iterator begin()
+				{
+					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
+					return (iterator(this->_root));
+				}
+				
+				const_iterator begin() const
+				{
+					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
+					return (const_iterator(this->_root));
+				}
+				iterator end()
+				{
+					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
+					return (iterator(this->_end));
+				}
+					
+				const_iterator end() const
+				{
+					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
+					return (const_iterator(this->_end));
+				}
+
+				reverse_iterator rbegin()
+				{
+					return (reverse_iterator(this->end()));
+				}
+				
+				const_reverse_iterator rbegin() const
+				{
+					return (const_reverse_iterator(this->end()));
+				}
+
+				reverse_iterator rend()
+				{
+					return (reverse_iterator(this->begin()));
+				}
+				
+				const_reverse_iterator rend() const
+				{
+					return (const_reverse_iterator(this->begin()));
+				}
 
 				//************ ************//
 				//******* CAPACITY ********//
@@ -151,7 +194,8 @@ namespace ft {
 				//*************** ***************//
 				//******* ELEMENT ACCESS ********//
 				//*************** ***************//
-
+				
+				//!Modifier INSERT needs to be implemented to attempt this 3 functions
 				//TODO: mapped_type& operator[] (const key_type& k)
 				//TODO: mapped_type& at (const key_type& k);
 				//TODO: const mapped_type& at (const key_type& k) const;
@@ -160,8 +204,62 @@ namespace ft {
 				//******* MODIFIERS ********//
 				//************* ************//
 
-				
+				//TODO: insert
+				//TODO: erase
 
+				void swap (map& x)
+				{
+					Bst*				tmp_root;
+					Bst*				tmp_end;
+					size_type			tmp_size;
+					key_compare			tmp_comp;
+					allocator_type		tmp_alloc;
+
+					tmp_root = x._root;
+					tmp_end = x._end;
+					tmp_size = x._size;
+					tmp_comp = x._comp;
+					tmp_alloc = x._alloc;
+					//-----------------//
+					x._root = this->_root;
+					x._end = this->_end;
+					x._size = this->_size;
+					x._comp = this->_comp;
+					x._alloc = this->_alloc;
+					//-------------------//
+					this->_root = tmp_root;
+					this->_end = tmp_end;
+					this->_size = tmp_size;
+					this->_comp = tmp_comp;
+					this->_alloc = tmp_alloc;
+				}
+
+				void clear()
+				{
+					if (this->_size > 0)
+						this->_tree.clean(&(this->_root));
+					this->_size = 0;
+					this->_root = 0;
+					this->_end = 0;
+				}
+
+				//************* ************//
+				//******* OBSERVERS ********//
+				//************* ************//
+
+				key_compare key_comp() const
+				{
+					return (this->_comp);
+				}
+
+				value_compare value_comp() const
+				{
+					return (value_compare(this->_comp));
+				}
+
+				//************* ************//
+				//******* OPERATIONS *******//
+				//************* ************//
 
 
 	};

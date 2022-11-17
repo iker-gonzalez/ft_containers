@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 08:24:27 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/15 09:13:40 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/17 08:18:47 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft {
 				/** Constructor **/
 				template < typename Node, typename key_value_pair >
 				MapIterator(const MapIterator<Node, key_value_pair>& other)
-				: _node(other.node()), _beg(other.begin()), _end(other.end())
+				: _node(other.root()), _beg(other.begin()), _end(other.end())
 				{
 					return ;
 				}
@@ -60,7 +60,7 @@ namespace ft {
 				/** Assignation Operator **/
 				map_iterator&	operator=(const map_iterator& other)
 				{
-					this->_node = other._node();
+					this->_node = other.root();
 					this->_beg = other.begin();
 					this->_end = other.end();
 					return (*this);
@@ -70,7 +70,7 @@ namespace ft {
 				//*************** GETTERS *************//
 				//****************** ******************//
 
-				node_ptr node(void) const
+				node_ptr root(void) const
 				{
 					return (this->_node);
 				}
@@ -166,13 +166,13 @@ namespace ft {
 	template < typename Node, typename key_value_pair >
 	bool	operator==(const map_iterator<Node, key_value_pair>& lhs, const map_iterator<Node, key_value_pair> rhs)
 	{
-		return (lhs.node() == rhs.node());
+		return (lhs.root() == rhs.root());
 	}
 
 	template < typename Node, typename key_value_pair, >
 	bool	operator!=(const map_iterator<Node, key_value_pair>& lhs, const map_iterator<Node, key_value_pair> rhs)
 	{
-		return (lhs.node() != rhs.node());
+		return (lhs.root() != rhs.root());
 	}
 
 }

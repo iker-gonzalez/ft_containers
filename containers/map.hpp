@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/17 09:09:45 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/18 08:07:24 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -261,8 +261,113 @@ namespace ft {
 				//******* OPERATIONS *******//
 				//************* ************//
 
+				iterator find (const key_type& k)
+				{
+					iterator	it(this->_tree.search(this->_root, value_type(k, mapped_type())));
 
+					if (!it)
+						return (this->end());
+					return (it);
+				}
+
+				const_iterator find (const key_type& k) const
+				{
+					iterator	it(this->_tree.search(this->_root, value_type(k, mapped_type())));
+
+					if (!it)
+						return (this->end());
+					return (it);
+				}
+
+				size_type count (const key_type& k) const
+				{
+					iterator	it(this->_tree.search(this->_root, value_type(k, mapped_type())));
+
+					if (!it)
+						return (0);
+					return (1);
+				}
+
+				iterator lower_bound (const key_type& k)
+				{
+					//TODO: return on equivalent keys
+					iterator beg(this->begin());
+
+					while (beg != this->end())
+					{
+						if (!this->_comp(beg.node()->data.first, k)
+							return (beg);
+						beg++;
+					}
+					return (beg);
+				}
+
+				const_iterator lower_bound (const key_type& k) const
+				{
+					//TODO: return on equivalent keys
+					const_iterator beg(this->begin());
+
+					while (beg != this->end())
+					{
+						if (!this->_comp(beg.node()->data.first, k)
+							return (beg);
+						beg++;
+					}
+					return (beg);
+				}
+
+				iterator upper_bound (const key_type& k)
+				{
+					//TODO: return on equivalent keys
+					iterator beg(this->begin());
+
+					while (beg != this->end())
+					{
+						if (this->_comp(k, beg.node()->data.first))
+							return (beg);
+						beg++;
+					}
+					return (beg);
+					
+				}
+
+				const_iterator upper_bound (const key_type& k) const
+				{
+					//TODO: return on equivalent keys
+					const_iterator beg(this->begin());
+
+					while (beg != this->end())
+					{
+						if (this->_comp(k, beg.node()->data.first))
+							return (beg);
+						beg++;
+					}
+					return (beg);
+				}
+
+				ft::pair<iterator,iterator> equal_range (const key_type& k)
+				{
+					return (ft::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k)));
+				}
+
+				ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+				{
+					return (ft::pair<const_iterator, const_iterator>(this->lower_bound(k), this->upper_bound(k)));
+				}
+
+				//************* ************//
+				//******* ALLOCATOR ********//
+				//************* ************//
+
+				allocator_type get_allocator() const
+				{
+					return (this->_alloc);
+				}
 	};
+
+	//****************** ******************//
+	//******* RELATIONAL OPERATORS ********//
+	//****************** ******************//
 
 }
 

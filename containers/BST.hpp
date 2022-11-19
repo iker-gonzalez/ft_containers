@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/11/17 08:59:11 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/19 10:08:40 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ namespace ft {
 				// Insert new node
 				Bst* insertNode(Bst* node, value_type data)
 				{
-					//! Return a new node if the current tree position is empty
+					//! Return a new node if the tree is empty
 					if (!node)
 					{
 						node = this->_alloc.allocate(1);
@@ -141,7 +141,7 @@ namespace ft {
 						node->right = insertNode(node->right, data);
 						node->right->parent = node;
 					}
-					return (node);
+					return (node); //returns root
 				}
 
 				// Deleting a node

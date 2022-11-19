@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/18 08:07:24 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/19 12:04:19 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,8 +204,140 @@ namespace ft {
 				//******* MODIFIERS ********//
 				//************* ************//
 
-				//TODO: insert
-				//TODO: erase
+				// Inserts element(s) into the container, if the container doesn't already contain an element with an equivalent key.
+				ft::pair<iterator,bool> insert (const value_type& val)
+				{
+					Bst* cmp;
+
+					cmp = 0;
+					if (this->_size > 0)
+						cmp = this->_tree.search(this->_root, val);
+					if (cmp)
+						return (ft::pair<iterator, bool>(iterator(cmp), false));
+					this->_root = this->_tree.insertNode(this->_root, val);
+					this->_size++;
+					//we return pointer to root if newly inserted node is returned on insertion
+					while (this->_root->parent)
+						this->_root = this->_root->parent;
+					//? if size == 1
+					cmp = this->_tree.search(this->_root, val);
+					return (ft::pair<iterator, bool>(iterator(cmp), true));
+				}
+
+				iterator insert( iterator pos, const value_type& val)
+				{
+					Bst* cmp;
+
+					(void)pos;
+					cmp = 0;
+					if (this->_size > 0)
+						cmp = this->_tree.search(this->_root, val);
+					if (!cmp)
+					{
+						this->_root = this->_tree.insertNode(this->_root, val);
+						this->_size++;
+						//we return pointer to root if newly inserted node is returned on insertion
+						while (this->_root->parent)
+							this->_root = this->_root->parent;
+						//? if size == 1
+						cmp = this->_tree.search(this->_root, val);
+					}
+					return (iterator(cmp));
+				}
+
+				//** inserts elements from range [first, last].
+				template <class InputIterator>
+				void insert (InputIterator first, InputIterator last)
+				{
+					Bst* cmp
+					//size_type c_size;
+
+					//c_size = this->_size;
+					while (first != last)
+					{
+						if (this->_size > 0)
+							cmp = this->_tree.search(this->_root, *first);
+						if (!cmp)
+						{
+							this->_root = this->_tree.insertNode(this->_root, *first);
+							this->_size++;
+							//we return pointer to root if newly inserted node is returned on insertion
+							while (this->_root->parent)
+								this->_root = this->_root->parent;
+						}
+						first++;
+					}
+					//? if init == 0 && this->_size > 0
+					return ;
+				}
+
+				//** Removes the element (if one exists - return 0) with the key equivalent to key - return 1;
+				size_type erase( const key_type& key )
+				{
+					Bst* cmp;
+
+					if (this->_size > 0)
+					{
+						cmp = this->_tree.search(this->_root, value_type(key, mapped_type()));
+						if (!cmp)
+							return (0);
+						this->_root = this->_tree.deleteNode(this->_root, value_type(key, mapped_type()));
+						this->_size--;
+						while (this->_root->parent)
+							this->_root = this->_root->parent;
+						//? if size == 1
+						return (1);
+					}
+					return (0);
+				}
+				
+				void erase (iterator position)
+				{
+					Bst* cmp;
+					iterator beg(this->begin());
+
+					if (this->_size > 0)
+					{
+						while (beg != position)
+							beg++;
+						this->_root = this->_tree.deleteNode(this->_root, *beg);
+						while (this->_root->parent)
+							this->_root = this->_root->parent;
+						//? if size == 1
+					}
+					return ;
+				}
+				
+				iterator erase( iterator first, iterator last )
+				{
+					int len;
+					int idx;
+					iterator it;
+
+					it = first;
+					len = 0;
+					while (it != last)
+					{
+						it++;
+						len++;
+					}
+					key_type keys[len];
+					idx = 0;
+					it = first;
+					while (count < len)
+					{
+						keys[idx] = it->first;
+						count++;
+						it++;
+					}
+					count = 0;
+					while (count < len)
+					{
+						this->erase(keys[count]);
+						count++;
+					}
+					return ;
+				}
 
 				void swap (map& x)
 				{

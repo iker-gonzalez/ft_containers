@@ -1,5 +1,5 @@
 # <h1 align="center">
-🗄 ft_containers 🗄
+	🗄 ft_containers 🗄
 </h1>
 
 <p align="center">
@@ -25,14 +25,9 @@
 
 ## 🗣️ About
 
-> Re-
+> Reimplementation of stack, vector and map container types of the C++ standard template library (STL).
 
-
-Small simulated 3D game inspired by the famous [Wolfenstein 3D game](https://www.youtube.com/watch?v=561sPCk6ByE). We need to create a "realistic" 3D graphical representation of the inside of a maze from a first person perspective, using ray casting principles.
-
-![Game](https://github.com/iker-gonzalez/cub3d/blob/main/game.gif)
-
-For detailed information, refer to the [**subject of this project**](https://github.com/iker-gonzalez/42_cursus/blob/main/_PDFs/en.subject_cub3d.pdf)
+For detailed information, refer to the [**subject of this project**](https://github.com/iker-gonzalez/42_cursus/blob/main/_PDFs/en.subject_ft_containers.pdf)
 
 
  ## 🛠️ Usage

@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/19 12:04:19 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/21 09:11:43 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,16 +105,48 @@ namespace ft {
 					this->_root = 0;
 					this->_end = 0;
 					//creates an empty node (root) with no values
-					this->_end = this->_Tree.insert(this->_root, value_type());
+					this->_end = this->_tree.insertNode(this->_end, value_type());
 					this->_size = 0;
 					this->_comp = comp;
 					this->_alloc = alloc;
 					return ;
 				}
 
-				//TODO: template <class InputIterator>map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+				template <class InputIterator>
+				map (InputIterator first, InputIterator last,
+				const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+				{
+					this->_root = 0;
+					this->_end = 0;
+					this->_end = this->_tree.insertNode(this->_end, value_type());
+					this->_size = 0;
+					this->_comp = comp;
+					this->_alloc = alloc;
+					while (first != last)
+					{
+						this->insert(*first);
+						first++;
+					}
+				}
 
-				//TODO: map (const map& x);
+				map (const map& x)
+				{
+					const_iterator it(x.begin());
+					
+					this->_root = x._root;
+					this->_end = x.end;
+					this->_size = x._size;
+					this->_comp = x._comp;
+					this->_alloc = x._alloc;
+					if (x._size > 0)
+					{
+						while (it != x.end())
+						{
+							this->insert(*it);
+							it++;
+						}
+					}
+				}
 
 				//destructor
 				~map(void)
@@ -122,7 +154,14 @@ namespace ft {
 					this->_tree.clean(&(this->_root));
 				}
 
-				//TODO: map& operator= (const map& x);
+				map& operator= (const map& x)
+				{
+					if (&x == this)
+						return (*this);
+					this->clear();
+					this->insert(x.begin(), x.end());
+					return (*this);
+				}
 
 				//************ ************//
 				//******* ITERATORS *******//
@@ -185,7 +224,7 @@ namespace ft {
 					return (this->_size);
 				}
 
-				//Returns the maximum number of elements that the map container can hold.
+				//**Returns the maximum number of elements that the map container can hold.
 				size_type max_size() const
 				{
 					return (this->_tree.max_size());
@@ -195,10 +234,39 @@ namespace ft {
 				//******* ELEMENT ACCESS ********//
 				//*************** ***************//
 				
-				//!Modifier INSERT needs to be implemented to attempt this 3 functions
-				//TODO: mapped_type& operator[] (const key_type& k)
-				//TODO: mapped_type& at (const key_type& k);
-				//TODO: const mapped_type& at (const key_type& k) const;
+				/*
+				* Returns a reference to the value that is mapped to a key equivalent to key,
+				* performing an insertion if such key does not already exist.
+				*/
+				mapped_type& operator[] (const key_type& k)
+				{
+					return ((*((this->insert(ft::pair<key_type, mapped_type>(k, mapped_type()))))));
+				}
+				
+				/*
+				* Returns a reference to the mapped value of the element identified with key k.
+				* If k does not match the key of any element in the container, the function throws an out_of_range exception.
+				*/
+				mapped_type& at (const key_type& k)
+				{
+					
+					Bst*	comp;
+
+					comp = this->_Tree.search(this->_root, ft::pair<key_type, mapped_type>(k, mapped_type()));
+					if (!comp)
+						throw std::out_of_range("out of range");
+					return ((*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))))));
+				}
+				
+				const mapped_type& at (const key_type& k) const
+				{
+					Bst*	comp;
+
+					comp = this->_Tree.search(this->_root, ft::pair<key_type, mapped_type>(k, mapped_type()));
+					if (!comp)
+						throw std::out_of_range("out of range");
+					return ((*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))))));
+				}
 
 				//************* ************//
 				//******* MODIFIERS ********//
@@ -500,6 +568,101 @@ namespace ft {
 	//****************** ******************//
 	//******* RELATIONAL OPERATORS ********//
 	//****************** ******************//
+
+	/*
+	* Checks if the contents of lhs and rhs are equal, that is,
+	* they have the same number of elements and each element in
+	* lhs compares equal with the element in rhs at the same position.
+	*/
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator==( const std::map<Key,T,Compare,Alloc>& lhs,
+					const std::map<Key,T,Compare,Alloc>& rhs )
+	{
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator	beg_lhs;
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator	beg_rhs;
+
+		if (lhs.size() == rhs.size())
+		{
+			beg_lhs = lhs.begin();
+			beg_rhs = rhs.begin();
+			while (beg_lhs != lhs.end())
+			{
+				if (*beg_lhs != *beg_rhs)
+					return (false);
+				beg_lhs++;
+				beg_rhs++;
+			}
+			return (true);
+		}
+		return (false);
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator!=( const std::map<Key,T,Compare,Alloc>& lhs,
+					const std::map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (!(lhs == rhs));
+	}
+
+	/*
+	* Compares the contents of lhs and rhs lexicographically.
+	*/
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator<( const std::map<Key,T,Compare,Alloc>& lhs,
+					const std::map<Key,T,Compare,Alloc>& rhs )
+	{
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator	beg_lhs;
+		typename ft::map<Key, T, Compare, Alloc>::const_iterator	beg_rhs;
+
+		beg_lhs = lhs.begin();
+		beg_rhs = rhs.begin();
+		while (beg_lhs != lhs.end() && beg_rhs != rhs.end())
+		{
+			if (*beg_lhs > *beg_rhs)
+				return (false);
+			if (*beg_lhs < *beg_rhs)
+				return (true);
+			beg_lhs++;
+			beg_rhs++;
+		}
+		if (beg_lhs == lhs.end() && beg_rhs != rhs.end())
+			return (true);
+		return (false);
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator<=( const std::map<Key,T,Compare,Alloc>& lhs,
+					const std::map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (!(rhs < lhs));
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>( const std::map<Key,T,Compare,Alloc>& lhs,
+					const std::map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (rhs < lhs);
+	}
+
+	template< class Key, class T, class Compare, class Alloc >
+	bool operator>=( const std::map<Key,T,Compare,Alloc>& lhs,
+					const std::map<Key,T,Compare,Alloc>& rhs )
+	{
+		return (!(lhs < rhs));
+	}
+
+	//****************** ******************//
+	//******* NON MEMBER FUNCTIONS ********//
+	//****************** ******************//
+
+	/*
+	* Swaps the contents of lhs and rhs.
+	*/
+	template< class Key, class T, class Compare, class Alloc >
+	void swap( std::map<Key,T,Compare,Alloc>& lhs, std::map<Key,T,Compare,Alloc>& rhs )
+	{
+		lhs.swap(rhs);
+	}
 
 }
 

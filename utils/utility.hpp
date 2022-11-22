@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 08:45:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/03 08:20:44 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/22 08:52:53 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ namespace ft {
 	template< class T1, class T2 >
 	ft::pair<T1, T2> make_pair( T1 t, T2 u )
 	{
-		return (ft::pair<T1, T2>(x, y));
+		return (ft::pair<T1, T2>(t, u));
 	}
 
 	template< class T1, class T2 >

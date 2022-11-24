@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/28 08:24:27 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/22 08:42:48 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/24 08:48:13 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ namespace ft {
 				typedef typename container_type::size_type											size_type;
 	
 				//* member functions
-				explicit stack (const container_type& ctnr = container_type())						{ _container(container_type); };
-				Stack(Stack const &other)															{ _container = other._container; };
-				~Stack()																			{ };
-				Stack& operator=(const Stack &other)												{ if (this == &other) return *this;
+				explicit stack (const container_type& ctnr = container_type()):						_container(ctnr) { };
+				stack(stack const &other)															{ _container = other._container; };
+				~stack()																			{ };
+				stack& operator=(const stack &other)												{ if (this == &other) return *this;
 																									_container = other._container;
 																									return *this; };	
 				//* element access

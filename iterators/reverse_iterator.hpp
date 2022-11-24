@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 08:18:34 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/26 09:07:55 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/24 07:56:25 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ namespace ft {
 					//initialization constructor 
 					explicit reverse_iterator (iterator_type it): _it(it)					{ };
 					//copy constructor	
-					template <class Iter>
 					reverse_iterator (const reverse_iterator<Iter>& rev_it): _it(rev_it)	{ };
 					//Base
 					iterator_type base() const									{ return (_it);};
@@ -65,8 +64,7 @@ namespace ft {
 
 					//?https://en.cppreference.com/w/cpp/iterator/reverse_iterator
 
-					template< class U > 
-					reverse_iterator& operator=( const reverse_iterator<U>& other )
+					reverse_iterator& operator=( const reverse_iterator<Iter>& other )
 					{
 						_it = other._it;
 						return (*this);

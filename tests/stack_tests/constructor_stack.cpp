@@ -1,20 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_constructor.cpp                              :+:      :+:    :+:   */
+/*   constructor_stack.cpp                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 08:24:27 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/22 08:34:52 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/24 09:04:32 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stack>
-# include <vector>
-# include <deque>
-# include <iostream>
-
+#include "header_stack_test.hpp"
 # include "../../containers/stack.hpp"
 
 void	leaks(void)
@@ -35,8 +31,8 @@ int	main(void)
 	std::cout << "\033[1m\033[33mCONSTRUCTOR STACK TEST\033[39m\033[0m" << std::endl;
 	{
 		std::cout << "\033[1m\033[35mstd::stack\033[39m\033[0m" << std::endl;
-		std::deque<int> mydeque (3,100);          // deque with 3 elements
-		std::vector<int> myvector (2,200);        // vector with 2 elements
+		std::deque<int> mydeque (3, 100);          // deque with 3 elements
+		std::vector<int> myvector (2, 200);        // vector with 2 elements
 
 		std::stack<int> first;                    // empty stack
 		std::stack<int> second (mydeque);
@@ -50,21 +46,23 @@ int	main(void)
 		std::cout << "size of fourth: " << fourth.size() << '\n';
 	}
 	std::cout << std::endl;
+	
 	{
 		std::cout << "\033[1m\033[35mft::stack\033[39m\033[0m" << std::endl;
 		std::deque<int> mydeque (3,100);          // deque with 3 elements
-		ft::vector<int> myvector (2,200);        // vector with 2 elements
+		//!ft::vector<int> myvector (2,200);        // vector with 2 elements
 
 		ft::stack<int> first;                    // empty stack
 		ft::stack<int, std::deque<int> > second (mydeque);
 
 		ft::stack<int,std::vector<int> > third;  // empty stack using vector
-		ft::stack<int> fourth (myvector);
+		//!ft::stack<int> fourth (myvector);
 
 		std::cout << "size of first: " << first.size() << '\n';
 		std::cout << "size of second: " << second.size() << '\n';
 		std::cout << "size of third: " << third.size() << '\n';
-		std::cout << "size of fourth: " << fourth.size() << '\n';
+		//!std::cout << "size of fourth: " << fourth.size() << '\n';
 	}
+	
 	return (0);
 }

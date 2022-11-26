@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 08:45:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/22 08:52:53 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/26 09:49:36 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,25 +173,25 @@ namespace ft {
 	template< class T1, class T2 >
 	bool operator<( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
 	{
-		return (lhs.first < rhs.first || !(lhs.first < rhs.first) && lhs.second < rhs.second);
+		return (lhs.first < rhs.first || (!(lhs.first < rhs.first) && lhs.second < rhs.second));
 	}
 
 	template< class T1, class T2 >
 	bool operator<=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
 	{
-		return (lhs.first <= rhs.first || !(lhs.first <= rhs.first) && lhs.second <= rhs.second);
+		return (lhs.first <= rhs.first || (!(lhs.first <= rhs.first) && lhs.second <= rhs.second));
 	}
 
 	template< class T1, class T2 >
 	bool operator>( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
 	{
-		return (lhs.first > rhs.first || !(lhs.first > rhs.first) && lhs.second > rhs.second);
+		return (lhs.first > rhs.first || (!(lhs.first > rhs.first) && lhs.second > rhs.second));
 	}
 
 	template< class T1, class T2 >
 	bool operator>=( const ft::pair<T1,T2>& lhs, const ft::pair<T1,T2>& rhs )
 	{
-		return (lhs.first >= rhs.first || !(lhs.first >= rhs.first) && lhs.second >= rhs.second);
+		return (lhs.first >= rhs.first || (!(lhs.first >= rhs.first) && lhs.second >= rhs.second));
 	}
 }
 

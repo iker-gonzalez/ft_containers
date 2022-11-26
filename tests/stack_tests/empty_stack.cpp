@@ -1,43 +1,67 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   empty_stack.cpp                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/07 08:24:27 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/24 09:04:23 by ikgonzal         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "header_stack_test.hpp"
-# include "../../containers/stack.hpp"
-
+#include "stack_tests.hpp"
+/*
 void	leaks(void)
 {
 	char	val;
 
 	std::cout << std::endl;
 	std::cout << "\033[1m\033[31mLEAKS\033[39m\033[0m" << std::endl;
-	system("leaks constructor_stack_test");
+	system("leaks empty_stack_test");
 	std::cout << "Press ENTER to continue...";
 	val = getchar();
 }
-
-int main ()
+*/
+int	main(void)
 {
-  std::stack<int> mystack;
-  int sum (0);
+	//system("clear");
+	//atexit(leaks);
+	std::cout << "\033[1m\033[33mEMPTY STACK TEST\033[39m\033[0m" << std::endl;
+	{
+		std::cout << "\033[1m\033[35mstd::stack\033[39m\033[0m" << std::endl;
+		std::stack<int> mystack;
+		int sum (0);
 
-  for (int i=1;i<=10;i++) mystack.push(i);
+		for (int i=1;i<=10;i++) mystack.push(i);
 
-  while (!mystack.empty())
-  {
-     sum += mystack.top();
-     mystack.pop();
-  }
+		std::cout << "mystack size: " << mystack.size() << std::endl;
+		std::cout << "mystack empty? " << mystack.empty() << std::endl;
 
-  std::cout << "total: " << sum << '\n';
+		std::cout << "Init bool: ";
+		while (!mystack.empty())
+		{
+			std::cout << mystack.top() << " ";
+			sum += mystack.top();
+			mystack.pop();
+		}
+		std::cout << '\n';
 
-  return 0;
+		std::cout << "total: " << sum << '\n';
+		std::cout << std::endl << "mystack size: " << mystack.size() << std::endl;
+		std::cout << "mystack empty? " << mystack.empty() << std::endl;
+	}
+	std::cout << std::endl;
+	{
+		std::cout << "\033[1m\033[35mft::stack\033[39m\033[0m" << std::endl;
+		ft::stack<int> mystack;
+		int sum (0);
+
+		for (int i=1;i<=10;i++) mystack.push(i);
+
+		std::cout << "mystack size: " << mystack.size() << std::endl;
+		std::cout << "mystack empty? " << mystack.empty() << std::endl;
+
+		std::cout << "Init bool: ";
+		while (!mystack.empty())
+		{
+			std::cout << mystack.top() << " ";
+			sum += mystack.top();
+			mystack.pop();
+		}
+		std::cout << '\n';
+
+		std::cout << "total: " << sum << '\n';
+		std::cout << std::endl << "mystack size: " << mystack.size() << std::endl;
+		std::cout << "mystack empty? " << mystack.empty() << std::endl;
+	}
+	return (0);
 }

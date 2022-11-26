@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/24 08:39:37 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/26 11:09:10 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,9 @@ namespace ft {
 		//********************** **********************//
 
 		public:
-		
-		//Default constructor. Constructs an empty container with a default-constructed allocator.
-		vector(void): _size(0), _capacity(0), _ptr(NULL) { };
 
 		//Constructs an empty container with the given allocator alloc.
-		explicit vector(const allocator_type& alloc)
+		explicit vector(const allocator_type& alloc = allocator_type())
 		{
 			this->_size = 0;
 			this->_capacity = 0;
@@ -65,14 +62,14 @@ namespace ft {
 		}
 
 		//Constructs the container with count copies of elements with value val.
-		explicit vector (size_type n, const value_type& val, const allocator_type& alloc)
+		explicit vector (size_type n, const_reference value = value_type(), const allocator_type& alloc = allocator_type())
 		{
 			this->_size = n;
 			this->_capacity = n;
 			this->_alloc = alloc;
 			this->_ptr = _alloc.allocate(this->_capacity);
 			for (size_type i = 0; i < n; i++)
-				_alloc.construct(&_ptr[i], val);
+				_alloc.construct(&_ptr[i], value);
 		}
 
 		//Copy constructor. Constructs the container with the copy of the contents of x.
@@ -211,7 +208,7 @@ namespace ft {
 			if (n > this->size())
 			{
 				pointer new_ptr = _alloc.allocate(n);
-				for (int i = 0; i < this->size(); i++)
+				for (size_type i = 0; i < this->size(); i++)
 					this->_alloc.construct(&new_ptr[i], this->_ptr[i]);
 				this->_alloc.deallocate(this->_ptr, this->_capacity);
 				this->_ptr = new_ptr;
@@ -259,7 +256,7 @@ namespace ft {
 
 		reference back()
 		{
-			return (&(this->_ptr[this->size() - 1]));
+			return ((this->_ptr[this->size() - 1]));
 		}
 
 		const_reference back() const
@@ -303,7 +300,7 @@ namespace ft {
 		void assign (InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = 0)
 		{
-			size_type i;
+			difference_type i;
 
 			if (first > last)
 				throw std::out_of_range("ft::vector::assign : first > last");
@@ -335,7 +332,7 @@ namespace ft {
 
 		void pop_back()
 		{
-			_alloc.destroy(this->_ptr[_size - 1]);
+			_alloc.destroy(&(this->_ptr[_size - 1]));
 			this->_size--;
 		}
 
@@ -474,11 +471,19 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
+		typename ft::vector<T, Alloc>::const_iterator	beg_lhs;
+		typename ft::vector<T, Alloc>::const_iterator	beg_rhs;
+
 		if (lhs.size() == rhs.size())
-		{
-			for (int i = 0; i < lhs.size(); i++) {
-				if (lhs._ptr[i] != rhs._ptr[i])
+		{	
+			beg_lhs = lhs.begin();
+			beg_rhs = rhs.begin();
+			while (beg_lhs != lhs.end())
+			{
+				if (*beg_lhs != *beg_rhs)
 					return false;
+				beg_lhs++;
+				beg_rhs++;
 			}
 			return true;
 		}
@@ -488,79 +493,58 @@ namespace ft {
 	template <class T, class Alloc>
 	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		if (lhs.size() == rhs.size())
-		{
-			for (int i = 0; i < lhs.size(); i++) {
-				if (lhs._ptr[i] != rhs._ptr[i])
-					return true;
-			}
-			return false;
-		}
-		return true;
+		return (!(lhs == rhs));
 	}
 
 	template <class T, class Alloc>
 	bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		if (lhs.size() == rhs.size())
+		typename ft::vector<T, Alloc>::const_iterator	beg_lhs;
+		typename ft::vector<T, Alloc>::const_iterator	beg_rhs;
+
+		beg_lhs = lhs.begin();
+		beg_rhs = rhs.begin();
+		while (beg_lhs != lhs.end() && beg_rhs != rhs.end())
 		{
-			for (int i = 0; i < lhs.size(); i++) {
-				if (lhs._ptr[i] < rhs._ptr[i])
-					return true;
-			}
-			return false;
+			if (*beg_lhs > *beg_rhs)
+				return (false);
+			if (*beg_lhs < *beg_rhs)
+				return (true);
+			beg_lhs++;
+			beg_rhs++;
 		}
-		if (lhs.size() < rhs.size())
-			return true;
-		return false;
+		if (beg_lhs == lhs.end() && beg_rhs != rhs.end())
+			return (true);
+		return (false);
 	}
 
 	template <class T, class Alloc>
 	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		if (lhs.size() == rhs.size())
-		{
-			for (int i = 0; i < lhs.size(); i++) {
-				if (lhs._ptr[i] <= rhs._ptr[i])
-					return true;
-			}
-			return false;
-		}
-		if (lhs.size() <= rhs.size())
-			return true;
-		return false;
+		return (!(rhs < lhs));
 	}
 
 	template <class T, class Alloc>
 	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		if (lhs.size() == rhs.size())
-		{
-			for (int i = 0; i < lhs.size(); i++) {
-				if (lhs._ptr[i] > rhs._ptr[i])
-					return true;
-			}
-			return false;
-		}
-		if (lhs.size() > rhs.size())
-			return true;
-		return false;
+		return (rhs < lhs);
 	}
 
 	template <class T, class Alloc>
 	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs)
 	{
-		if (lhs.size() == rhs.size())
-		{
-			for (int i = 0; i < lhs.size(); i++) {
-				if (lhs._ptr[i] >= rhs._ptr[i])
-					return true;
-			}
-			return false;
-		}
-		if (lhs.size() >= rhs.size())
-			return true;
-		return false;
+		return (!(lhs < rhs));
+	}
+
+	//******* ********//
+	//***** SWAP ****//
+	//******* *******//
+
+	template < typename T, typename Alloc >
+	void	swap(ft::vector<T, Alloc>& x, ft::vector<T, Alloc>& y)
+	{
+		x.swap(y);
+		return ;
 	}
 }
 

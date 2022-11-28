@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 08:18:34 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/24 07:56:25 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/28 09:04:01 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,16 @@ namespace ft {
 					//?https://cplusplus.com/reference/iterator/reverse_iterator/reverse_iterator/
 
 					//default constructor
-					reverse_iterator()														{ };
+					reverse_iterator():												_it(0) { };
 					//initialization constructor 
 					explicit reverse_iterator (iterator_type it): _it(it)					{ };
 					//copy constructor	
 					reverse_iterator (const reverse_iterator<Iter>& rev_it): _it(rev_it)	{ };
 					//Base
-					iterator_type base() const									{ return (_it);};
+					iterator_type base() const									{ return (this->_it);};
+
+					~reverse_iterator(void) {}
+
 
 
 					//****************** ******************//
@@ -66,24 +69,23 @@ namespace ft {
 
 					reverse_iterator& operator=( const reverse_iterator<Iter>& other )
 					{
-						_it = other._it;
+						this->_it = other.base();
 						return (*this);
 					}
 
 					reference operator*() const 
 					{
-						iterator_type tmp = _it;
-						return *(--_it);
+						return (*(--(iterator_type(this->_it))));
 					}
 
 					pointer operator->() const
 					{
-						return (&(operator*()));
+						return (&(*(*this)));
 					}
 
 					reference operator[]( difference_type n ) const
 					{
-						return (base()[-n-1]);
+						return (this->base()[-n-1]);
 					}
 
 					reverse_iterator& operator++()

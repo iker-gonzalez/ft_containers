@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/15 16:50:24 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/10/16 11:24:05 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/11/28 09:04:17 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@
 
 namespace ft {
 
-	template<class Iter>
-	class iterator_traits {
+	template<typename Iter>
+	struct iterator_traits {
 			public:
 				typedef typename Iter::iterator_category	iterator_category;
 				typedef typename Iter::value_type			value_type;
@@ -75,7 +75,7 @@ namespace ft {
 
 	//T* specialization member types
 	template <class T>
-	class iterator_traits<T*> {
+	struct iterator_traits<T*> {
 			public:
 				typedef	std::ptrdiff_t						difference_type;
 				typedef	T									value_type;
@@ -86,7 +86,7 @@ namespace ft {
 
 	//const T* specialization member types
 	template <class T>
-	class iterator_traits<const T*> {
+	struct iterator_traits<const T*> {
 			public:
 				typedef	std::ptrdiff_t						difference_type;
 				typedef	T									value_type;

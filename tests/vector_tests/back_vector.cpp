@@ -1,0 +1,38 @@
+#include "vector_tests.hpp"
+
+int	main(void)
+{
+	std::cout << "\033[1m\033[33mBACK VECTOR TEST\033[39m\033[0m" << std::endl;
+	{
+		std::cout << "\033[1m\033[35mstd::vector\033[39m\033[0m" << std::endl;
+		std::vector<int> myvector;
+
+		myvector.push_back(10);
+		while (myvector.back() != 0)
+		{
+			myvector.push_back ( myvector.back() -1 );
+			std::cout << "back: " << myvector.back() << std::endl;
+		}
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size() ; i++)
+			std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+	}
+	std::cout << std::endl;
+	{
+		std::cout << "\033[1m\033[35mft::vector\033[39m\033[0m" << std::endl;
+		ft::vector<int> myvector;
+
+		myvector.push_back(10);
+		while (myvector.back() != 0)
+		{
+			myvector.push_back ( myvector.back() -1 );
+			std::cout << "back: " << myvector.back() << std::endl;
+		}
+		std::cout << "myvector contains:";
+		for (unsigned i=0; i<myvector.size() ; i++)
+			std::cout << ' ' << myvector[i];
+		std::cout << '\n';
+	}
+	return (0);
+}

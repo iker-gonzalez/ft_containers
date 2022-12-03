@@ -6,7 +6,6 @@ SRCS		= init_vector.cpp		\
 		  constructor_vector.cpp	\
 		  operator=_vector.cpp		\
 		  begin_end_vector.cpp		\
-		  rbegin_rend_vector.cpp	\
 		  size_vector.cpp		\
 		  max_size_vector.cpp		\
 		  resize_vector.cpp		\
@@ -42,7 +41,6 @@ $(NAME):	$(OBJS)
 	$(CXX) $(CXXFLAGS) constructor_vector.o -o constructor_vector_test
 	$(CXX) $(CXXFLAGS) operator=_vector.o -o operator=_vector_test
 	$(CXX) $(CXXFLAGS) begin_end_vector.o -o begin_end_vector_test
-	$(CXX) $(CXXFLAGS) rbegin_rend_vector.o -o rbegin_rend_vector_test
 	$(CXX) $(CXXFLAGS) size_vector.o -o size_vector_test
 	$(CXX) $(CXXFLAGS) max_size_vector.o -o max_size_vector_test
 	$(CXX) $(CXXFLAGS) resize_vector.o -o resize_vector_test
@@ -81,7 +79,6 @@ run:		all
 	@ ./constructor_vector_test
 	@ ./operator=_vector_test
 	@ ./begin_end_vector_test
-	@ ./rbegin_rend_vector_test
 	@ ./size_vector_test
 	@ ./max_size_vector_test
 	@ ./resize_vector_test

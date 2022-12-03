@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/28 08:43:57 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/03 13:02:08 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ namespace ft {
 				typedef typename allocator_type::const_pointer						const_pointer;
 				typedef typename ft::random_access_iterator<value_type>				iterator;
 				typedef typename ft::random_access_iterator<const value_type>		const_iterator;
-				typedef typename ft::reverse_iterator<value_type>					reverse_iterator;
-				typedef typename ft::reverse_iterator<const value_type>				const_reverse_iterator;
+				typedef typename ft::reverse_iterator<iterator>						reverse_iterator;
+				typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 				typedef typename std::ptrdiff_t										difference_type;
 				typedef typename std::size_t										size_type;
 
@@ -67,7 +67,7 @@ namespace ft {
 			this->_size = n;
 			this->_capacity = n;
 			this->_alloc = alloc;
-			this->_ptr = _alloc.allocate(this->_capacity);
+			this->_ptr = this->_alloc.allocate(this->_capacity);
 			for (size_type i = 0; i < n; i++)
 				_alloc.construct(&_ptr[i], value);
 		}
@@ -106,12 +106,8 @@ namespace ft {
 
 		vector& operator= (const vector& x)
 		{
-			for (size_t i = 0; i < this->_size; i++)
-				this->_alloc.destroy(&(this->_ptr[i]));
-			this->_size = x._size;
-			this->_capacity = x._capacity;
-			for (size_type i = 0; i < this->_size; i++)
-				this->_ptr[i] = x[i];
+			if (this != &x)
+				this->assign(x.begin(), x.end());
 			return (*this);
 		}
 
@@ -141,22 +137,22 @@ namespace ft {
 
 		reverse_iterator rbegin()
 		{
-			return reverse_iterator(this->end());
+			return (reverse_iterator(this->_ptr + this->_size));
 		}
 
 		const_reverse_iterator rbegin() const
 		{
-			const_reverse_iterator(this->end());
+			return (const_reverse_iterator(this->_ptr + this->_size));
 		}
 
 		reverse_iterator rend()
 		{
-			return reverse_iterator(this->begin());
+			return reverse_iterator(this->_ptr);
 		}
 
 		const_reverse_iterator rend() const
 		{
-			return const_reverse_iterator(this->begin());
+			return const_reverse_iterator(this->_ptr);
 		}
 
 		//****************** ******************//
@@ -170,7 +166,7 @@ namespace ft {
 
 		size_type max_size() const
 		{
-			return (std::numeric_limits<size_type>::max());
+			return (this->_alloc.max_size());
 		}
 
 
@@ -199,22 +195,53 @@ namespace ft {
 			}
 		}
 
-		void resize(size_type n, value_type val = value_type())
+		void resize(size_type count, value_type val = value_type())
 		{
-			size_type i;
+			iterator	begin;
+			iterator	end;
+			pointer		modify_ptr;
 
-			if (n < this->_size)
+			if (count < this->_size)
 			{
-				for (i = n; i < _size; i++)
-					pop_back();
+				begin = this->begin() + count;
+				end = this->end();
+				modify_ptr = this->_ptr + count;
+				while (begin != end)
+				{
+					this->_alloc.destroy(modify_ptr);
+					modify_ptr++;
+					begin++;
+				}
+				this->_size = count;
+			}
+			else if (count > this->_size && count <= this->_capacity)
+			{
+				begin = this->end();
+				end = this->begin() + count;
+				modify_ptr = this->_ptr + this->_size;
+				while (begin != end)
+				{
+					this->_alloc.construct(modify_ptr, val);
+					modify_ptr++;
+					begin++;
+				}
+				this->_size = count;
 			}
 			else
 			{
-				if (n > this->_capacity)
-					reserve(n * 2);
-				for (i = _size; i < n; i++)
-					push_back(val);
+				if (this->_capacity * 2 > count)
+					this->reserve(this->_capacity * 2);
+				else
+					this->reserve(count);
+				modify_ptr = this->_ptr + this->_size;
+				while (this->_size < count)
+				{
+					this->_alloc.construct(modify_ptr, val);
+					modify_ptr++;
+					this->_size++;
+				}
 			}
+			return ;
 		}
 
 		//****************** ******************//
@@ -223,7 +250,7 @@ namespace ft {
 
 		reference operator[] (size_type n)
 		{
-			return (&(this->_ptr[n]));
+			return ((this->_ptr[n]));
 		}
 
 		const_reference operator[] (size_type n) const
@@ -235,24 +262,24 @@ namespace ft {
 		{
 			if (n > this->size())
 				throw std::out_of_range("Element trying to be accessed is out of range\n");
-			return (&(this->_ptr[n]));
+			return ((this->_ptr[n]));
 		}
 
 		const_reference at (size_type n) const
 		{
 			if (n > this->size())
 				throw std::out_of_range("Element trying to be accessed is out of range\n");
-			return (&(this->_ptr[n]));
+			return ((this->_ptr[n]));
 		}
 
 		reference front()
 		{
-			return (&(this->_ptr[0]));
+			return ((this->_ptr[0]));
 		}
 
 		const_reference front() const
 		{
-			return (&(this->_ptr[0]));
+			return ((this->_ptr[0]));
 		}
 
 		reference back()
@@ -262,7 +289,7 @@ namespace ft {
 
 		const_reference back() const
 		{
-			return (&(this->_ptr[this->size() - 1]));
+			return ((this->_ptr[this->size() - 1]));
 		}
 
 		value_type* data()
@@ -282,15 +309,12 @@ namespace ft {
 		//Assigns new contents to the vector, replacing its current contents, and modifying its size accordingly.
 		void assign (size_type n, const value_type& val)
 		{
-			int	i;
+			size_type	i;
 			
 			clear();
 			if (n > _capacity)
 			{
-				_alloc.deallocate(_ptr, _capacity);
-				_alloc.allocate(_ptr, n);
-				this->_capacity = n;
-				this->_size = n;
+				this->resize(n);
 			}
 			_size = n;
 			for (i = 0; i < _size; i++)
@@ -305,13 +329,14 @@ namespace ft {
 
 			if (first > last)
 				throw std::out_of_range("ft::vector::assign : first > last");
-			if (first == last) {
+			if (first == last) 
+			{
 				clear();
 				return ;
 			}
 			clear();
 			difference_type size = last - first;
-			if (size > _capacity)
+			if ((size_type)size > _capacity)
 				reserve(size);
 			for (i = 0; i < size; i++)
 				_alloc.construct(&_ptr[i], *(first + i));
@@ -338,25 +363,25 @@ namespace ft {
 		}
 
 		//inserts one value before pos.
-		iterator insert(const_iterator pos, const T& value)
+		iterator insert(iterator position, const_reference value)
 		{
-			size_type position = pos - _ptr;
+			size_type pos = position - _ptr;
 			if (_size == _capacity)
 			{
 				if (!this->_size)
 					reserve(1);
 				else
-				_alloc.reserve(this->_capacity * 2);
+					reserve(this->_capacity * 2);
 			}
-			for (size_type i = _size; i > position; i--)
+			for (size_type i = _size; i > pos; i--)
 				_ptr[i] = _ptr[i - 1];
-			this->_alloc.construct(&this->_ptr[position], value);
+			this->_alloc.construct(&this->_ptr[pos], value);
 			this->_size++;
-			return (iterator(_ptr + position));
+			return (iterator(_ptr + pos));
 		}
 
 		//inserts n copies of val before position
-		void insert (iterator position, size_type n, const value_type& val)
+		void insert (iterator position, size_type n, const_reference val)
 		{
 			size_type i;
 			size_type pos = position - _ptr;
@@ -366,7 +391,7 @@ namespace ft {
 				if (!this->_size)
 					reserve(1);
 				else
-				_alloc.reserve(this->_capacity * 2);
+					reserve(this->_capacity * 2);
 			}
 			for (i = _size; i > pos; i--)
 				_ptr[i + n - 1] = _ptr[i - 1];
@@ -402,22 +427,50 @@ namespace ft {
 		//removes the value from position.
 		iterator erase (iterator pos)
 		{
-			size_type position = pos - _ptr;
-			for (size_type i = _size; i > position; i--)
-				_ptr[i] = _ptr[i + 1];
-			this->_alloc.destroy(this->_ptr[position]);
-			this->_size--;
-			return (iterator(_ptr + position));
+			difference_type	diff;
+			iterator		end;
+			pointer			modify_ptr;
+
+			diff = pos - this->begin();
+			end = this->end() - 1;
+			modify_ptr = this->_ptr + diff;
+			while (pos != end)
+			{
+				*modify_ptr = *(modify_ptr + 1);
+				modify_ptr++;
+				pos++;
+			}
+			this->_alloc.destroy(modify_ptr);
+			this->_size -= 1;
+			return (this->begin() + diff);
 		}
 
 		//removes elements from the range[first, last]
 		iterator erase (iterator first, iterator last)
 		{
-			while (first != last)
+			difference_type	count;
+			difference_type	diff;
+			iterator		begin;
+			pointer			modify_ptr;
+
+			count = last - first;
+			diff = this->end() - last;
+			modify_ptr = this->_ptr + (first - this->begin());
+			begin = first;
+			while (diff > 0)
 			{
-				erase (first);
-				last--;
+				*modify_ptr = *(modify_ptr + count);
+				modify_ptr++;
+				begin++;
+				diff--;
 			}
+			while (begin != this->end())
+			{
+				this->_alloc.destroy(modify_ptr);
+				modify_ptr++;
+				begin++;
+			}
+			this->_size -= count;
 			return (first);
 		}
 
@@ -443,8 +496,8 @@ namespace ft {
 
 		void clear()
 		{
-			for (int i = 0; i < _size; i++)
-				_alloc.destroy(_ptr[i]);
+			for (size_type i = 0; i < _size; i++)
+				_alloc.destroy(&(_ptr[i]));
 			this->_size = 0;
 		}
 

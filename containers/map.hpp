@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/22 08:10:57 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/05 10:27:06 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 namespace ft {
 	template<class Key, class T, class Compare = std::less<Key>,
-	class Allocator = std::allocator<std::pair<const Key, T>>
+	class Allocator = std::allocator<std::pair<const Key, T> >
 	> class map {
 
 		private:
@@ -64,7 +64,7 @@ namespace ft {
 		
 					public:
 								//***member types***//
-								bool							result_type
+								bool							result_type;
 								typedef value_type				first_argument_type;
 								typedef value_type				second_argument_type;
 								//***member functions***//
@@ -105,7 +105,7 @@ namespace ft {
 					this->_root = 0;
 					this->_end = 0;
 					//creates an empty node (root) with no values
-					this->_end = this->_tree.insertNode(this->_end, value_type());
+					this->_end = this->_tree.insert(this->_end, value_type());
 					this->_size = 0;
 					this->_comp = comp;
 					this->_alloc = alloc;
@@ -118,7 +118,7 @@ namespace ft {
 				{
 					this->_root = 0;
 					this->_end = 0;
-					this->_end = this->_tree.insertNode(this->_end, value_type());
+					this->_end = this->_tree.insert(this->_end, value_type());
 					this->_size = 0;
 					this->_comp = comp;
 					this->_alloc = alloc;
@@ -134,7 +134,7 @@ namespace ft {
 					const_iterator it(x.begin());
 					
 					this->_root = x._root;
-					this->_end = x.end;
+					this->_end = x._end;
 					this->_size = x._size;
 					this->_comp = x._comp;
 					this->_alloc = x._alloc;
@@ -240,7 +240,7 @@ namespace ft {
 				*/
 				mapped_type& operator[] (const key_type& k)
 				{
-					return ((*((this->insert(ft::pair<key_type, mapped_type>(k, mapped_type()))))));
+					return ((*((this->insert(ft::pair<key_type, mapped_type>(k, mapped_type()))).first)).second);
 				}
 				
 				/*
@@ -282,7 +282,7 @@ namespace ft {
 						cmp = this->_tree.search(this->_root, val);
 					if (cmp)
 						return (ft::pair<iterator, bool>(iterator(cmp), false));
-					this->_root = this->_tree.insertNode(this->_root, val);
+					this->_root = this->_tree.insert(this->_root, val);
 					this->_size++;
 					//we return pointer to root if newly inserted node is returned on insertion
 					while (this->_root->parent)
@@ -302,7 +302,7 @@ namespace ft {
 						cmp = this->_tree.search(this->_root, val);
 					if (!cmp)
 					{
-						this->_root = this->_tree.insertNode(this->_root, val);
+						this->_root = this->_tree.insert(this->_root, val);
 						this->_size++;
 						//we return pointer to root if newly inserted node is returned on insertion
 						while (this->_root->parent)
@@ -317,7 +317,7 @@ namespace ft {
 				template <class InputIterator>
 				void insert (InputIterator first, InputIterator last)
 				{
-					Bst* cmp
+					Bst* cmp;
 					//size_type c_size;
 
 					//c_size = this->_size;
@@ -327,7 +327,7 @@ namespace ft {
 							cmp = this->_tree.search(this->_root, *first);
 						if (!cmp)
 						{
-							this->_root = this->_tree.insertNode(this->_root, *first);
+							this->_root = this->_tree.insert(this->_root, *first);
 							this->_size++;
 							//we return pointer to root if newly inserted node is returned on insertion
 							while (this->_root->parent)
@@ -392,17 +392,17 @@ namespace ft {
 					key_type keys[len];
 					idx = 0;
 					it = first;
-					while (count < len)
+					while (idx < len)
 					{
 						keys[idx] = it->first;
-						count++;
+						idx++;
 						it++;
 					}
-					count = 0;
-					while (count < len)
+					idx = 0;
+					while (idx < len)
 					{
-						this->erase(keys[count]);
-						count++;
+						this->erase(keys[idx]);
+						idx++;
 					}
 					return ;
 				}
@@ -495,7 +495,7 @@ namespace ft {
 
 					while (beg != this->end())
 					{
-						if (!this->_comp(beg.node()->data.first, k)
+						if (!this->_comp(beg.node()->data.first, k))
 							return (beg);
 						beg++;
 					}
@@ -509,7 +509,7 @@ namespace ft {
 
 					while (beg != this->end())
 					{
-						if (!this->_comp(beg.node()->data.first, k)
+						if (!this->_comp(beg.node()->data.first, k))
 							return (beg);
 						beg++;
 					}

@@ -6,12 +6,15 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/11/19 10:08:40 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/05 10:49:23 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BST_HPP
 #define BST_HPP
+
+#include <iostream>
+#include "../utils/utility.hpp"
 
 	//?https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/
 	//?https://www.programiz.com/dsa/binary-search-tree
@@ -42,8 +45,6 @@
 	*   Alloc    Object used to manage BST storage.
 	*/
 
-#include <iostream>
-#include "utility.hpp"
 
 namespace ft {
 	
@@ -55,10 +56,10 @@ namespace ft {
 				//**** MEMBER TYPES ****//
 				//********** ***********//
 
-				typedef key_value_pair							value_type;
-				typedef Compare									key_compare;
-				typedef Allocator								allocator_type;
-				typedef typename std::size_t					size_type;
+				typedef key_value_pair										value_type;
+				typedef Compare												key_compare;
+				typedef typename Allocator::template rebind<Bst>::other		allocator_type;
+				typedef typename std::size_t								size_type;
 
 				//*********** ********** ****//
 				//**** MEMBER ATTRIBUTES ****//
@@ -82,9 +83,8 @@ namespace ft {
 				//********** *********** ****//
 
 				//*constructor
-				
-				explicit Bst(value_type d = value_type, const key_compare& comp = key_compare,
-						const allocator_type& alloc = allocator_type): data(p)
+				explicit Bst(value_type d = value_type(), const key_compare& comp = key_compare(),
+						const allocator_type& alloc = allocator_type()): data(d)
 				{
 					this->left = 0;
 					this->right = 0;
@@ -112,7 +112,7 @@ namespace ft {
 				//*search
 				Bst* search(Bst* root, value_type data)
 				{
-					if (!root || root->data.first = data.first)
+					if (!root || root->data.first == data.first)
 						return (root);
 					if (this->_comp(root->data.first, data.first))
 						return (search(root->right, data));
@@ -120,7 +120,7 @@ namespace ft {
 				}
 
 				// Insert new node
-				Bst* insertNode(Bst* node, value_type data)
+				Bst*& insert(Bst*& node, value_type data)
 				{
 					//! Return a new node if the tree is empty
 					if (!node)
@@ -132,13 +132,13 @@ namespace ft {
 				 	// Traverse to the left if data key is smaller than current node's key
 					if (this->_comp(data.first, node->data.first))
 					{
-						node->left = insertNode(node->left, data);
+						node->left = insert(node->left, data);
 						node->left->parent = node;
 					}
 					// Traverse to the right if data key is bigger than current node's key
 					else if (this->_comp(node->data.first, data.first))
 					{
-						node->right = insertNode(node->right, data);
+						node->right = insert(node->right, data);
 						node->right->parent = node;
 					}
 					return (node); //returns root
@@ -177,7 +177,7 @@ namespace ft {
 						} 
 						else if (node->right == NULL) 
 						{
-							Bst *temp = root->left;
+							Bst *temp = node->left;
 							if (temp)
 								temp->parent = node->parent;
 							this->_alloc.destroy(node);
@@ -189,7 +189,7 @@ namespace ft {
 						// If the node has //! two children //
 						
 						// 1) Get the inorder successor of that node.
-						Bst *temp = get_inorder_successor(root->right);
+						Bst *temp = get_inorder_successor(node->right);
 
 						// 2) Replace the node with the inorder successor.
 						node->data = temp->data;

@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/12/05 14:24:23 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/05 14:37:42 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,12 +158,27 @@ namespace ft {
 					this->_tree.clean(&(this->_root));
 				}
 
-				map& operator= (const map& x)
+				map& operator= (const map& other)
 				{
-					if (&x == this)
-						return (*this);
-					this->clear();
-					this->insert(x.begin(), x.end());
+					const_iterator	first(other.begin());
+
+					if (this != &other)
+					{
+						if (this->_size > 0)
+							this->_tree.clean(&(this->_root));
+						this->_end->left = 0;
+						this->_size = 0;
+						this->_comp = other._comp;
+						this->_alloc = other._alloc;
+						if (other.size() > 0)
+						{
+							while (first != other.end())
+							{
+								this->insert(value_type(first->first, first->second));
+								first++;
+							}
+						}
+					}
 					return (*this);
 				}
 

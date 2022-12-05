@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 08:45:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/11/26 09:49:36 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/05 14:17:45 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ namespace ft {
 		pair( const first_type& x, const second_type& y ): first(x), second(y) {};
 		template< class U1, class U2 >
 		pair( const pair<U1, U2>& p ): first(p.first), second(p.second) {};
+		~pair(void) {};
 		pair& operator=( const pair& other )
 		{
 			first = other.first;
@@ -153,9 +154,9 @@ namespace ft {
 	//****************** ******************//
 
 	template< class T1, class T2 >
-	ft::pair<T1, T2> make_pair( T1 t, T2 u )
+	pair<T1, T2> make_pair( T1 t, T2 u )
 	{
-		return (ft::pair<T1, T2>(t, u));
+		return (pair<T1, T2>(t, u));
 	}
 
 	template< class T1, class T2 >

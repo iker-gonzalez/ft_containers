@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/12/05 10:49:23 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/05 14:10:30 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ namespace ft {
 				~Bst () {};
 
 				//*search
-				Bst* search(Bst* root, value_type data)
+				Bst* search(Bst* root, value_type data) const
 				{
 					if (!root || root->data.first == data.first)
 						return (root);
@@ -136,7 +136,7 @@ namespace ft {
 						node->left->parent = node;
 					}
 					// Traverse to the right if data key is bigger than current node's key
-					else if (this->_comp(node->data.first, data.first))
+					else if (data.first != node->data.first)
 					{
 						node->right = insert(node->right, data);
 						node->right->parent = node;
@@ -153,7 +153,7 @@ namespace ft {
 					//! find the node to be deleted //
 					// Traverse to the left if data key is smaller than current node's key
 					if (this->_comp(data.first, node->data.first))
-						node->left = deleteNode(node->data, data);
+						node->left = deleteNode(node->left, data);
 					// Traverse to the right if data key is bigger than current node's key
 					else if (this->_comp(node->data.first, data.first))
 						node->right = deleteNode(node->right, data);

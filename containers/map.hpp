@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/12/05 10:27:06 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/05 14:24:23 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace ft {
 
 				typedef Key													key_type;
 				typedef T													mapped_type;
-				typedef typename ft::pair<const Key, T>						value_type;
+				typedef typename ft::pair<Key, T>							value_type;
 				typedef typename std::size_t								size_type;
 				typedef typename std::ptrdiff_t								difference_type;
 				typedef Compare												key_compare;
@@ -63,21 +63,22 @@ namespace ft {
 				class value_compare {
 		
 					public:
-								//***member types***//
-								bool							result_type;
-								typedef value_type				first_argument_type;
-								typedef value_type				second_argument_type;
-								//***member functions***//
-								bool operator()( const value_type& lhs, const value_type& rhs ) const {
-									return (_comp(lhs.first, rhs.first));
-								}
-
+						//***member types***//
+						bool							result_type;
+						typedef value_type				first_argument_type;
+						typedef value_type				second_argument_type;
 
 					protected:
-								//***member objects***//
-								key_compare						_comp;
-								//***constructor***//
-								value_compare( Compare c ):		_comp(c) {};
+						//***member objects***//
+						key_compare						_comp;
+
+					public:
+						//***constructor***//
+						value_compare( Compare c ):		_comp(c) {};
+						//***member functions***//
+						bool operator()( const value_type& lhs, const value_type& rhs ) const {
+							return (_comp(lhs.first, rhs.first));
+						}
 				};
 
 				//************ ************//
@@ -127,15 +128,17 @@ namespace ft {
 						this->insert(*first);
 						first++;
 					}
+					return ;
 				}
 
 				map (const map& x)
 				{
 					const_iterator it(x.begin());
 					
-					this->_root = x._root;
-					this->_end = x._end;
-					this->_size = x._size;
+					this->_root = 0;
+					this->_end = 0;
+					this->_end = this->_tree.insert(this->_end, value_type());
+					this->_size = 0;
 					this->_comp = x._comp;
 					this->_alloc = x._alloc;
 					if (x._size > 0)
@@ -146,6 +149,7 @@ namespace ft {
 							it++;
 						}
 					}
+					return ;
 				}
 
 				//destructor
@@ -169,14 +173,24 @@ namespace ft {
 
 				iterator begin()
 				{
-					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
-					return (iterator(this->_root));
+					iterator	it;
+					
+					if (this->_size == 0)
+						it = iterator(this->_end);
+					else
+						it = iterator(this->_root);
+					return (iterator(it.begin()));
 				}
 				
 				const_iterator begin() const
 				{
-					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
-					return (const_iterator(this->_root));
+					const_iterator	it;
+					
+					if (this->_size == 0)
+						it = iterator(this->_end);
+					else
+						it = iterator(this->_root);
+					return (iterator(it.begin()));
 				}
 				iterator end()
 				{
@@ -238,9 +252,9 @@ namespace ft {
 				* Returns a reference to the value that is mapped to a key equivalent to key,
 				* performing an insertion if such key does not already exist.
 				*/
-				mapped_type& operator[] (const key_type& k)
+				mapped_type& operator[](const key_type& k)
 				{
-					return ((*((this->insert(ft::pair<key_type, mapped_type>(k, mapped_type()))).first)).second);
+					return ((*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))).first)).second);
 				}
 				
 				/*
@@ -252,20 +266,20 @@ namespace ft {
 					
 					Bst*	comp;
 
-					comp = this->_Tree.search(this->_root, ft::pair<key_type, mapped_type>(k, mapped_type()));
+					comp = this->_tree.search(this->_root, ft::pair<key_type, mapped_type>(k, mapped_type()));
 					if (!comp)
 						throw std::out_of_range("out of range");
-					return ((*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))))));
+					return ((*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))).first)).second);
 				}
 				
 				const mapped_type& at (const key_type& k) const
 				{
 					Bst*	comp;
 
-					comp = this->_Tree.search(this->_root, ft::pair<key_type, mapped_type>(k, mapped_type()));
+					comp = this->_tree.search(this->_root, ft::pair<key_type, mapped_type>(k, mapped_type()));
 					if (!comp)
 						throw std::out_of_range("out of range");
-					return ((*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))))));
+					return ((*((this->insert(ft::pair<key_type, mapped_type>(k,mapped_type()))).first)).second);
 				}
 
 				//************* ************//
@@ -282,12 +296,16 @@ namespace ft {
 						cmp = this->_tree.search(this->_root, val);
 					if (cmp)
 						return (ft::pair<iterator, bool>(iterator(cmp), false));
+					this->_size += 1;
 					this->_root = this->_tree.insert(this->_root, val);
-					this->_size++;
 					//we return pointer to root if newly inserted node is returned on insertion
-					while (this->_root->parent)
+					while (this->_root->parent && this->_root->parent->parent)
 						this->_root = this->_root->parent;
-					//? if size == 1
+					if (this->_size == 1)
+					{
+						this->_end->left = this->_root;
+						this->_root->parent = this->_end;
+					}
 					cmp = this->_tree.search(this->_root, val);
 					return (ft::pair<iterator, bool>(iterator(cmp), true));
 				}
@@ -361,7 +379,7 @@ namespace ft {
 				
 				void erase (iterator position)
 				{
-					Bst* cmp;
+					//Bst* cmp;
 					iterator beg(this->begin());
 
 					if (this->_size > 0)
@@ -376,7 +394,7 @@ namespace ft {
 					return ;
 				}
 				
-				iterator erase( iterator first, iterator last )
+				void erase( iterator first, iterator last )
 				{
 					int len;
 					int idx;
@@ -465,7 +483,7 @@ namespace ft {
 				{
 					iterator	it(this->_tree.search(this->_root, value_type(k, mapped_type())));
 
-					if (!it)
+					if (!it.root())
 						return (this->end());
 					return (it);
 				}
@@ -474,7 +492,7 @@ namespace ft {
 				{
 					iterator	it(this->_tree.search(this->_root, value_type(k, mapped_type())));
 
-					if (!it)
+					if (!it.root())
 						return (this->end());
 					return (it);
 				}
@@ -483,7 +501,7 @@ namespace ft {
 				{
 					iterator	it(this->_tree.search(this->_root, value_type(k, mapped_type())));
 
-					if (!it)
+					if (!it.root())
 						return (0);
 					return (1);
 				}
@@ -495,7 +513,7 @@ namespace ft {
 
 					while (beg != this->end())
 					{
-						if (!this->_comp(beg.node()->data.first, k))
+						if (!this->_comp(beg.root()->data.first, k))
 							return (beg);
 						beg++;
 					}
@@ -509,7 +527,7 @@ namespace ft {
 
 					while (beg != this->end())
 					{
-						if (!this->_comp(beg.node()->data.first, k))
+						if (!this->_comp(beg.root()->data.first, k))
 							return (beg);
 						beg++;
 					}
@@ -523,7 +541,7 @@ namespace ft {
 
 					while (beg != this->end())
 					{
-						if (this->_comp(k, beg.node()->data.first))
+						if (this->_comp(k, beg.root()->data.first))
 							return (beg);
 						beg++;
 					}
@@ -538,7 +556,7 @@ namespace ft {
 
 					while (beg != this->end())
 					{
-						if (this->_comp(k, beg.node()->data.first))
+						if (this->_comp(k, beg.root()->data.first))
 							return (beg);
 						beg++;
 					}

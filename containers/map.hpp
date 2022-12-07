@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/12/05 14:37:42 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/07 11:14:31 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -375,18 +375,24 @@ namespace ft {
 				//** Removes the element (if one exists - return 0) with the key equivalent to key - return 1;
 				size_type erase( const key_type& key )
 				{
-					Bst* cmp;
+					Bst*	comp;
 
 					if (this->_size > 0)
 					{
-						cmp = this->_tree.search(this->_root, value_type(key, mapped_type()));
-						if (!cmp)
+						comp = this->_tree.search(this->_root, value_type(key, mapped_type()));
+						if (!comp)
 							return (0);
 						this->_root = this->_tree.deleteNode(this->_root, value_type(key, mapped_type()));
-						this->_size--;
-						while (this->_root->parent)
+						while (this->_root && this->_root->parent && this->_root->parent->parent)
 							this->_root = this->_root->parent;
-						//? if size == 1
+						this->_size -= 1;
+						if (this->_size == 0)
+							this->_end->left = 0;
+						else
+						{
+							this->_end->left = this->_root;
+							this->_root->parent = this->_end;
+						}
 						return (1);
 					}
 					return (0);
@@ -394,18 +400,7 @@ namespace ft {
 				
 				void erase (iterator position)
 				{
-					//Bst* cmp;
-					iterator beg(this->begin());
-
-					if (this->_size > 0)
-					{
-						while (beg != position)
-							beg++;
-						this->_root = this->_tree.deleteNode(this->_root, *beg);
-						while (this->_root->parent)
-							this->_root = this->_root->parent;
-						//? if size == 1
-					}
+					this->erase(position->first);
 					return ;
 				}
 				

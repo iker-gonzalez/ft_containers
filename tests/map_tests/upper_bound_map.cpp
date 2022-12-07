@@ -33,10 +33,6 @@ int	main(void)
 		std::cout << "lower bound of e --> ";
 		itlow=mymap.upper_bound ('e');
 		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
-
-		std::cout << "lower bound of g --> ";
-		itlow=mymap.upper_bound ('g');
-		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
 	}
 	std::cout << std::endl;
 	{
@@ -68,10 +64,6 @@ int	main(void)
 
 		std::cout << "lower bound of e --> ";
 		itlow=mymap.upper_bound ('e');
-		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
-
-		std::cout << "lower bound of g --> ";
-		itlow=mymap.upper_bound ('g');
 		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
 	}
 	return (0);

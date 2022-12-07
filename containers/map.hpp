@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/12/07 11:14:31 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/07 12:36:54 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 namespace ft {
 	template<class Key, class T, class Compare = std::less<Key>,
-	class Allocator = std::allocator<std::pair<const Key, T> >
+	class Allocator = std::allocator<ft::pair<const Key, T> >
 	> class map {
 
 		private:
@@ -338,10 +338,14 @@ namespace ft {
 						this->_root = this->_tree.insert(this->_root, val);
 						this->_size++;
 						//we return pointer to root if newly inserted node is returned on insertion
-						while (this->_root->parent)
+						while (this->_root->parent && this->_root->parent->parent)
 							this->_root = this->_root->parent;
-						//? if size == 1
 						cmp = this->_tree.search(this->_root, val);
+						if (this->_size == 1)
+						{
+							this->_end->left = this->_root;
+							this->_root->parent = this->_end;
+						}						
 					}
 					return (iterator(cmp));
 				}
@@ -351,24 +355,27 @@ namespace ft {
 				void insert (InputIterator first, InputIterator last)
 				{
 					Bst* cmp;
-					//size_type c_size;
+					size_type c_size;
 
-					//c_size = this->_size;
+					c_size = this->_size;
 					while (first != last)
 					{
-						if (this->_size > 0)
-							cmp = this->_tree.search(this->_root, *first);
+						cmp = this->_tree.search(this->_root, *first);
 						if (!cmp)
 						{
 							this->_root = this->_tree.insert(this->_root, *first);
 							this->_size++;
 							//we return pointer to root if newly inserted node is returned on insertion
-							while (this->_root->parent)
+							while (this->_root->parent && this->_root->parent->parent)
 								this->_root = this->_root->parent;
 						}
 						first++;
 					}
-					//? if init == 0 && this->_size > 0
+					if (c_size == 0 && this->_size > 0)
+					{
+						this->_end->left = this->_root;
+						this->_root->parent = this->_end;
+					}					
 					return ;
 				}
 
@@ -468,7 +475,7 @@ namespace ft {
 						this->_tree.clean(&(this->_root));
 					this->_size = 0;
 					this->_root = 0;
-					this->_end = 0;
+					this->_end->left = 0;
 				}
 
 				//************* ************//
@@ -515,10 +522,13 @@ namespace ft {
 						return (0);
 					return (1);
 				}
-
+				
+				/*
+				* Returns an iterator pointing to the first element that 
+				* is greater or equal to key.
+				*/
 				iterator lower_bound (const key_type& k)
 				{
-					//TODO: return on equivalent keys
 					iterator beg(this->begin());
 
 					while (beg != this->end())
@@ -530,9 +540,12 @@ namespace ft {
 					return (beg);
 				}
 
+				/*
+				* Returns an iterator pointing to the first element that 
+				* is greater or equal to key.
+				*/
 				const_iterator lower_bound (const key_type& k) const
 				{
-					//TODO: return on equivalent keys
 					const_iterator beg(this->begin());
 
 					while (beg != this->end())
@@ -544,29 +557,30 @@ namespace ft {
 					return (beg);
 				}
 
+				/*
+				* Returns an iterator pointing to the first element 
+				* that is greater than key.
+				*/
 				iterator upper_bound (const key_type& k)
 				{
-					//TODO: return on equivalent keys
 					iterator beg(this->begin());
 
 					while (beg != this->end())
 					{
-						if (this->_comp(k, beg.root()->data.first))
+						if (this->_comp(k, beg.root()->data.first) && beg.root()->data.first != k)
 							return (beg);
 						beg++;
 					}
 					return (beg);
-					
 				}
 
 				const_iterator upper_bound (const key_type& k) const
 				{
-					//TODO: return on equivalent keys
 					const_iterator beg(this->begin());
 
 					while (beg != this->end())
 					{
-						if (this->_comp(k, beg.root()->data.first))
+						if (this->_comp(k, beg.root()->data.first) && beg.root()->data.first != k)
 							return (beg);
 						beg++;
 					}

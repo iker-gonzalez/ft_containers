@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/12/07 12:36:54 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/11 13:48:04 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ namespace ft {
 				//destructor
 				~map(void)
 				{
-					this->_tree.clean(&(this->_root));
+					this->_tree.clean(&(this->_end));
 				}
 
 				map& operator= (const map& other)

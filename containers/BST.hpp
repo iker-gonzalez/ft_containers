@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/12/05 14:10:30 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/11 13:44:50 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ namespace ft {
 					return current;
 				}
 
-				void		clean(Bst** root)
+				void	clean(Bst** root)
 				{
 					if (!(*root))
 						return ;
@@ -237,26 +237,6 @@ namespace ft {
 				{
 					return (this->_alloc.max_size());
 				}
-
-				/*// Inorder Traversal
-				void inorder(Bst *root) 
-				{
-					if (root != NULL) 
-					{
-						// Traverse left
-						inorder(root->left);
-
-						// Traverse root
-						cout << root->data.first << ":" << root->data.second -> " -> ";
-
-						// Traverse right
-						inorder(root->right);
-					}
-				}*/
-
-				
-
-
 	};
 }
 

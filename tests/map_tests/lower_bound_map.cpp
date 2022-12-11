@@ -1,7 +1,18 @@
 #include "map_tests.hpp"
 
+void	leaks(void)
+{
+	std::cout << std::endl;
+	std::cout << "\033[1m\033[31mLEAKS\033[39m\033[0m" << std::endl;
+	system("leaks lower_bound_map_test");
+	std::cout << "Press ENTER to continue...";
+	getchar();
+}
+
 int	main(void)
 {
+	system("clear");
+	atexit(leaks);
 	std::cout << "\033[1m\033[33mLOWER_BOUND MAP TEST\033[39m\033[0m" << std::endl;
 	{
 		std::cout << "\033[1m\033[35mstd::map\033[39m\033[0m" << std::endl;
@@ -32,6 +43,10 @@ int	main(void)
 
 		std::cout << "lower bound of < --> ";
 		itlow=mymap.lower_bound ('<');
+		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
+
+		std::cout << "lower bound of g --> ";
+		itlow=mymap.lower_bound ('g');
 		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
 	}
 	std::cout << std::endl;
@@ -64,6 +79,10 @@ int	main(void)
 
 		std::cout << "lower bound of < --> ";
 		itlow=mymap.lower_bound ('<');
+		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
+
+		std::cout << "lower bound of g --> ";
+		itlow=mymap.lower_bound ('g');
 		std::cout << '(' << itlow->first << ", " << itlow->second << ')' << std::endl;
 	}
 	return (0);

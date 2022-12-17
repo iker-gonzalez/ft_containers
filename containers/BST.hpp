@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/12/11 13:44:50 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/11 15:44:29 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,18 @@
 		3) the right subtree is balanced
 	*/
 
+	//? https://www.programiz.com/dsa/avl-tree
+	//*** AVL Tree ***//
 	/*
-	*   Key      Type of keys mapped to elements.
-	*   T        Type of elements mapped to keys.
-	*   Compare  Comparison object used to sort the binary tree.
-	*   Alloc    Object used to manage BST storage.
+		AVL tree is a self-balancing binary search tree in which each node maintains extra information called
+		a balance factor whose value is either -1, 0 or +1.
+	*/
+
+
+	/*
+	*   key_value_pair      Type of keys mapped to elements.
+	*   Compare             Comparison object used to sort the binary tree.
+	*   Alloc               Object used to manage BST storage.
 	*/
 
 
@@ -69,7 +76,7 @@ namespace ft {
 				Bst*											left;
 				Bst*											right;
 				Bst*											parent;
-				//int											balance;
+				int												balance;
 
 		private:
 
@@ -89,7 +96,7 @@ namespace ft {
 					this->left = 0;
 					this->right = 0;
 					this->parent = 0;
-					//this->balance = 0;
+					this->balance = 0;
 					this->_comp = comp;
 					this->_alloc = alloc;
 					return ;
@@ -101,7 +108,7 @@ namespace ft {
 					this->left = other.left;
 					this->right = other.right;
 					this->parent = other.parent;
-					//this->balance = other.balance;
+					this->balance = other.balance;
 					this->data = other->data;
 					return(*this);
 				}
@@ -140,6 +147,21 @@ namespace ft {
 					{
 						node->right = insert(node->right, data);
 						node->right->parent = node;
+					}
+					node->balance = get_balance(node);
+					if (node->balance > 1 && this->_comp(data.first, node->left->data.first))
+						node = rotateLeftLeft(node);
+					else if (node->balance < -1 && this->_comp(node->right->data.first, data.first))
+						node = rotateRightRight(node);
+					else if (node->balance > 1 && this->_comp(node->left->data.first, data.first))
+					{
+						node->left = rotateRightRight(node->left);
+						node = rotateLeftLeft(node);
+					}
+					else if (node->balance < -1 && this->_comp(data.first, node->right->data.first))
+					{
+						node->right = rotateLeftLeft(node->right);
+						node = rotateRightRight(node);
 					}
 					return (node); //returns root
 				}
@@ -184,20 +206,33 @@ namespace ft {
 							this->_alloc.deallocate(node, 1);
 							return (temp);
 						}
+						else
+						{
+							//TODO: missing parent logic implementation
+							// If the node has //! two children //
+							
+							// 1) Get the inorder successor of that node.
+							Bst *succ= get_inorder_successor(node->right);
+							
+							//2) Establish parent succesor logic
+							Bst *parent = node;
+							if (parent != node)
+								parent->left = succ->right;
+							else
+								parent->right = succ->right;
+							if (succ->right)
+								succ->right->parent = parent;
 
-						//TODO: missing parent logic implementation
-						// If the node has //! two children //
-						
-						// 1) Get the inorder successor of that node.
-						Bst *temp = get_inorder_successor(node->right);
+							// 3) Replace the node with the inorder successor.
+							node->data = succ->data;
 
-						// 2) Replace the node with the inorder successor.
-						node->data = temp->data;
-
-						// 3) Remove the inorder successor from its original position.
-						this->_alloc.destroy(temp);
-						this->_alloc.deallocate(temp, 1);
+							// 4) Remove the inorder successor from its original position.
+							this->_alloc.destroy(succ);
+							this->_alloc.deallocate(succ, 1);
+							
+						}
 					}
+					node->balance = get_balance(node);
 					return (node);
 				}
 
@@ -236,6 +271,67 @@ namespace ft {
 				size_type	max_size(void) const
 				{
 					return (this->_alloc.max_size());
+				}
+
+				int		get_height(Bst* root) const
+				{
+					int	lheight;
+					int	rheight;
+
+					if (!root)
+						return (-1);
+					lheight = get_height(root->left);
+					rheight = get_height(root->right);
+					if (lheight < rheight)
+						return (rheight + 1);
+					return (lheight + 1);
+				}
+
+				int		get_balance(Bst* root) const
+				{
+					if (!root)
+						return (-1);
+					return (get_height(root->left) - get_height(root->right));
+				}
+
+				Bst*&	rotateLeftLeft(Bst*& root)
+				{
+					Bst*	tmp;
+					Bst*	tmp_succ;
+
+					tmp = root->left;
+					tmp_succ = root;
+					root->left = tmp->right;
+					if (tmp->right)
+						tmp->right->parent = root;
+					tmp->right = root;
+					tmp->parent = root->parent;
+					if (root->parent && root->parent->left == root)
+						root->parent->left = tmp;
+					else if (root->parent)
+						root->parent->right = tmp;
+					tmp_succ->parent = tmp;
+					return (root);
+				}
+
+				Bst*&		rotateRightRight(Bst*& root)
+				{
+					Bst*	tmp;
+					Bst*	tmp_succ;
+
+					tmp = root->right;
+					tmp_succ = root;
+					root->right = tmp->left;
+					if (tmp->left)
+						tmp->left->parent = root;
+					tmp->left = root;
+					tmp->parent = root->parent;
+					if (root->parent && root->parent->left == root)
+						root->parent->left = tmp;
+					else if (root->parent)
+						root->parent->right = tmp;
+					tmp_succ->parent = tmp;
+					return (root);
 				}
 	};
 }

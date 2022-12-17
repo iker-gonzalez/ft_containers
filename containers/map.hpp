@@ -6,7 +6,7 @@
 /*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/03 09:19:26 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/12/11 13:48:04 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/11 14:25:25 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,13 +209,11 @@ namespace ft {
 				}
 				iterator end()
 				{
-					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
 					return (iterator(this->_end));
 				}
 					
 				const_iterator end() const
 				{
-					//TODO: If the container is empty, the returned iterator value shall not be dereferenced.
 					return (const_iterator(this->_end));
 				}
 
@@ -253,7 +251,10 @@ namespace ft {
 					return (this->_size);
 				}
 
-				//**Returns the maximum number of elements that the map container can hold.
+				/*
+				* Returns the maximum number of elements that 
+				* the map container can hold.
+				*/
 				size_type max_size() const
 				{
 					return (this->_tree.max_size());
@@ -264,8 +265,9 @@ namespace ft {
 				//*************** ***************//
 				
 				/*
-				* Returns a reference to the value that is mapped to a key equivalent to key,
-				* performing an insertion if such key does not already exist.
+				* Returns a reference to the value that is mapped 
+				* to a key equivalent to key,performing an insertion 
+				* if such key does not already exist.
 				*/
 				mapped_type& operator[](const key_type& k)
 				{
@@ -273,8 +275,10 @@ namespace ft {
 				}
 				
 				/*
-				* Returns a reference to the mapped value of the element identified with key k.
-				* If k does not match the key of any element in the container, the function throws an out_of_range exception.
+				* Returns a reference to the mapped value of the 
+				* element identified with key k. If k does not match 
+				* the key of any element in the container, the function
+				* throws an out_of_range exception.
 				*/
 				mapped_type& at (const key_type& k)
 				{

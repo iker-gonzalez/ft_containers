@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: ikgonzal <ikgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 10:44:52 by ikgonzal          #+#    #+#             */
-/*   Updated: 2022/12/03 13:02:08 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/26 12:25:47 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,13 +194,23 @@ namespace ft {
 				this->_capacity= n;
 			}
 		}
+		
+		/*
+		* Resizes the container so that it contains n elements.
+		* If n is smaller than the current container size, the content
+		* is reduced to its first n elements, removing those beyond (and destroying them).
+		* If n is greater than the current container size, the content is expanded by
+		* inserting at the end as many elements as needed to reach a size of n. If val is specified, the new elements are initialized as copies of val, otherwise, they are value-initialized.
+		* If n is also greater than the current container capacity, an automatic reallocation
+		* of the allocated storage space takes place.
+		*/
 
 		void resize(size_type count, value_type val = value_type())
 		{
 			iterator	begin;
 			iterator	end;
 			pointer		modify_ptr;
-
+		
 			if (count < this->_size)
 			{
 				begin = this->begin() + count;

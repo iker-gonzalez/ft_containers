@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BST.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ikgonzal <ikgonzal@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: ikgonzal <ikgonzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 08:31:08 by marvin            #+#    #+#             */
-/*   Updated: 2022/12/11 15:44:29 by ikgonzal         ###   ########.fr       */
+/*   Updated: 2022/12/26 11:43:38 by ikgonzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,6 @@ namespace ft {
 						}
 						else
 						{
-							//TODO: missing parent logic implementation
 							// If the node has //! two children //
 							
 							// 1) Get the inorder successor of that node.

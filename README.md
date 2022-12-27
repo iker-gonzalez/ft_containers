@@ -35,3 +35,12 @@ For detailed information, refer to the [**subject of this project**](https://git
  Open a terminal and clone the repository in your local machine with the following command:
  
  `git clone https://github.com/iker-gonzalez/ft_containers.git`
+ 
+ Once inside, navigate to the directory called tests and execute the command `make`
+ 
+ This will compile all unit tests provided for this project, one for each of the functions reimplemented.
+ 
+ Once we have the outputs, execute `make run`
+ 
+ It will start comparing 
+ 

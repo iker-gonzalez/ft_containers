@@ -42,5 +42,7 @@ For detailed information, refer to the [**subject of this project**](https://git
  
  Once we have the outputs, execute `make run`
  
- It will start comparing 
+ It will start comparing std library functions output with ours, along with leaks testing.
+ 
+ Once testing is finished, all output objects would be removed.
  

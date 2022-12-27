@@ -33,4 +33,4 @@ For detailed information, refer to the [**subject of this project**](https://git
  ## 🛠️ Usage
  
  Open a terminal and clone the repository in your local machine with the following command:
- 'git clone https://github.com/iker-gonzalez/ft_containers.git'
+ `git clone https://github.com/iker-gonzalez/ft_containers.git`
